@@ -2219,6 +2219,10 @@
   let shockwaves = [];
   let ghostTrails = [];
   let texts = [];
+  let confetti = [];
+  let powerups = { magnet: 0, springJumps: 0, freezeTimer: 0, shield: 0 };
+  let isOverdrive = false;
+  let voiceEnabled = true;
 
   let camY = 0, score = 0, maxFloor = 0, combo = 0, maxCombo = 0, comboTimer = 0;
   let hurryLevel = 0, hurryTimer = 0, peakBpm = 120, blitzFrames = 3600;
@@ -3389,7 +3393,6 @@
   // ============================================================================
   // GOD-TIER ARCADE POLISH: VOICE ANNOUNCER, OVERDRIVE & TROPHIES
   // ============================================================================
-  let voiceEnabled = true;
   try {
     const ve = localStorage.getItem('vt_voice_enabled');
     if (ve !== null) voiceEnabled = ve === 'true';
@@ -3446,7 +3449,6 @@
   }
 
   // CONFETTI PARTICLE SYSTEM
-  let confetti = [];
   function spawnConfetti(x = W / 2, y = H * 0.4, count = 45) {
     const colors = ['#00f5d4', '#f72585', '#ffd166', '#a3e635', '#38bdf8', '#ffffff'];
     for (let i = 0; i < count; i++) {
@@ -3949,7 +3951,6 @@ Kannst du mich schlagen? Tritt direkt im Browser gegen mich an:
   // MONETIZATION & IN-GAME ECONOMY SYSTEM (VERKAUFSKONZEPT)
   // ============================================================================
   // POWER-UPS & HAPTICS STATE
-  let powerups = { magnet: 0, springJumps: 0, freezeTimer: 0, shield: 0 };
   let runCount = 0;
   let claimedDeals = [];
   try {
