@@ -2498,6 +2498,25 @@
 
 <script>
 (() => {
+  // Global Game Core State
+  const keys = { left: false, right: false, jumpHeld: false };
+  const activeHudTouches = new Map();
+  let jumpBuffer = 0;
+  let analogSteer = 0;
+  let activeTouchX = null;
+  let state = 'MENU';
+  let player = null;
+  let platforms = [];
+  let particles = [];
+  let iceChunks = [];
+  let shockwaves = [];
+  let ghostTrails = [];
+  let texts = [];
+  let confetti = [];
+  let powerups = { magnet: 0, springJumps: 0, freezeTimer: 0, shield: 0 };
+  let isOverdrive = false;
+  let voiceEnabled = true;
+
   // ============================================================================
   // 1. STREAMLINED CONTROL MODES WITH ANIMATED SVG VISUAL PREVIEWS
   // ============================================================================
@@ -3051,10 +3070,7 @@
   window.addEventListener('resize', resize);
   resize();
 
-  const keys = { left: false, right: false, jumpHeld: false };
-  let jumpBuffer = 0;
-  let analogSteer = 0;
-  let activeTouchX = null; // For subtle holographic touch feedback on canvas
+  // (keys, jumpBuffer, analogSteer initialized at top of script)
 
   function triggerJump() {
     jumpBuffer = 12;
@@ -3170,14 +3186,19 @@
   function updateTouchHudVisibility() {
     const layer = document.getElementById('touchHudLayer');
     if (!layer) return;
-    if (state === 'PLAY') {
+    const isPlaying = (typeof state !== 'undefined' && state === 'PLAY');
+    if (isPlaying) {
       layer.classList.remove('hidden');
     } else {
       layer.classList.add('hidden');
-      keys.left = false;
-      keys.right = false;
-      keys.jumpHeld = false;
-      activeHudTouches.clear();
+      if (typeof keys !== 'undefined') {
+        keys.left = false;
+        keys.right = false;
+        keys.jumpHeld = false;
+      }
+      if (typeof activeHudTouches !== 'undefined') {
+        activeHudTouches.clear();
+      }
       document.querySelectorAll('.hud-btn').forEach(b => b.classList.remove('pressed'));
     }
   }
@@ -3192,7 +3213,7 @@
   }
 
   // Multi-Touch Tracking for Zero Conflict / Zero Stuck Keys
-  const activeHudTouches = new Map(); // touchId -> 'left' | 'right' | 'jump'
+  // (activeHudTouches declared at top)
 
   function setupHudButtons() {
     const btnL = document.getElementById('hudBtnLeft');
@@ -3746,18 +3767,19 @@
   // ============================================================================
   // 4. PROGRESSIVE DIFFICULTY SCALING (SPEED + SHRINKING PLATFORMS + MOVING ICE)
   // ============================================================================
-  let state = 'MENU';
-  let player = null;
-  let platforms = [];
-  let particles = [];
-  let iceChunks = [];
-  let shockwaves = [];
-  let ghostTrails = [];
-  let texts = [];
-  let confetti = [];
-  let powerups = { magnet: 0, springJumps: 0, freezeTimer: 0, shield: 0 };
-  let isOverdrive = false;
-  let voiceEnabled = true;
+  // (Core state initialized at top of script)
+  state = 'MENU';
+  player = null;
+  platforms = [];
+  particles = [];
+  iceChunks = [];
+  shockwaves = [];
+  ghostTrails = [];
+  texts = [];
+  confetti = [];
+  powerups = { magnet: 0, springJumps: 0, freezeTimer: 0, shield: 0 };
+  isOverdrive = false;
+  voiceEnabled = true;
 
   let camY = 0, score = 0, maxFloor = 0, combo = 0, maxCombo = 0, comboTimer = 0;
   let hurryLevel = 0, hurryTimer = 0, peakBpm = 120, blitzFrames = 3600;
