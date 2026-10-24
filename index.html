@@ -1260,6 +1260,327 @@
       cursor: default;
     }
 
+
+    /* ==========================================================================
+       INTERACTIVE MOBILE TOUCH HUD & CONTROLS ENGINE
+       ========================================================================== */
+    .touch-hud-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 22;
+      overflow: hidden;
+      --hud-size: 1;
+      --hud-opacity: 0.88;
+      --hud-bottom: 22px;
+      --hud-spacing: 14px;
+      transition: opacity 0.2s ease;
+    }
+
+    .touch-hud-layer.hidden {
+      display: none !important;
+    }
+
+    /* Dynamic Touch Ripples */
+    .touch-ripple-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 23;
+    }
+
+    .touch-ripple-circle {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid #00f5d4;
+      transform: translate(-50%, -50%) scale(0.2);
+      pointer-events: none;
+      animation: vtTouchRippleAnim 0.38s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+    }
+
+    @keyframes vtTouchRippleAnim {
+      0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0.95; }
+      100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; }
+    }
+
+    /* Button Clusters */
+    .hud-cluster {
+      position: absolute;
+      bottom: calc(var(--hud-bottom) + env(safe-area-inset-bottom, 0px));
+      display: flex;
+      align-items: center;
+      gap: var(--hud-spacing);
+      pointer-events: auto;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      transition: bottom 0.15s ease, left 0.15s ease, right 0.15s ease, opacity 0.2s ease;
+    }
+
+    .hud-cluster-steer {
+      left: 14px;
+    }
+
+    .hud-cluster-jump {
+      right: 14px;
+    }
+
+    /* Buttons Styling */
+    .hud-btn {
+      position: relative;
+      width: calc(62px * var(--hud-size));
+      height: calc(62px * var(--hud-size));
+      border-radius: calc(18px * var(--hud-size));
+      background: rgba(10, 20, 38, var(--hud-opacity));
+      border: 2px solid rgba(0, 245, 212, 0.65);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 245, 212, 0.25), inset 0 0 12px rgba(0, 245, 212, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #00f5d4;
+      cursor: pointer;
+      padding: 0;
+      outline: none;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.08s ease, border-color 0.08s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hud-btn.pressed, .hud-btn:active {
+      transform: scale(0.91);
+      background: rgba(0, 245, 212, 0.35);
+      border-color: #fff;
+      box-shadow: 0 0 32px rgba(0, 245, 212, 0.85), inset 0 0 18px #00f5d4;
+      color: #fff;
+    }
+
+    .hud-btn-steer {
+      width: calc(62px * var(--hud-size));
+      height: calc(62px * var(--hud-size));
+    }
+
+    .hud-btn-jump {
+      width: calc(76px * var(--hud-size));
+      height: calc(76px * var(--hud-size));
+      border-radius: calc(22px * var(--hud-size));
+      border-color: rgba(247, 37, 133, 0.85);
+      box-shadow: 0 4px 22px rgba(0, 0, 0, 0.7), 0 0 22px rgba(247, 37, 133, 0.45), inset 0 0 14px rgba(247, 37, 133, 0.18);
+      color: #ffffff;
+    }
+
+    .hud-btn-jump.pressed, .hud-btn-jump:active {
+      transform: scale(0.91);
+      background: rgba(247, 37, 133, 0.45);
+      border-color: #ffd166;
+      box-shadow: 0 0 38px rgba(247, 37, 133, 0.95), inset 0 0 22px #f72585;
+      color: #ffd166;
+    }
+
+    .hud-btn-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .hud-icon {
+      width: calc(28px * var(--hud-size));
+      height: calc(28px * var(--hud-size));
+    }
+
+    .hud-jump-icon {
+      font-size: calc(22px * var(--hud-size));
+      line-height: 1;
+      filter: drop-shadow(0 0 6px rgba(247, 37, 133, 0.8));
+    }
+
+    .hud-jump-text {
+      font-weight: 900;
+      font-size: calc(11px * var(--hud-size));
+      letter-spacing: 0.08em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      margin-top: 2px;
+    }
+
+    .hud-btn-sub {
+      font-size: calc(7.5px * var(--hud-size));
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      opacity: 0.75;
+      margin-top: 1px;
+      pointer-events: none;
+    }
+
+    /* Pulsing aura when jump / bounce is ready */
+    .hud-btn-jump.bounce-ready {
+      border-color: #00f5d4;
+      animation: pulseJumpReady 0.9s ease-in-out infinite alternate;
+    }
+    @keyframes pulseJumpReady {
+      0% { box-shadow: 0 0 16px rgba(0, 245, 212, 0.4), inset 0 0 8px rgba(0, 245, 212, 0.2); }
+      100% { box-shadow: 0 0 32px rgba(0, 245, 212, 0.85), inset 0 0 16px rgba(0, 245, 212, 0.4); }
+    }
+
+    .hud-btn-jump.wall-ready {
+      border-color: #ffd166;
+      animation: pulseWallReady 0.6s ease-in-out infinite alternate;
+    }
+    @keyframes pulseWallReady {
+      0% { box-shadow: 0 0 18px rgba(255, 209, 102, 0.5); }
+      100% { box-shadow: 0 0 36px rgba(255, 209, 102, 0.95), inset 0 0 18px rgba(255, 209, 102, 0.5); }
+    }
+
+    /* HUD Style Modes */
+    .touch-hud-layer.style-minimal .hud-btn {
+      background: rgba(10, 20, 38, 0.35);
+      border-width: 1.5px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+    .touch-hud-layer.style-minimal .hud-btn-sub {
+      display: none;
+    }
+    .touch-hud-layer.style-invisible .hud-btn {
+      background: transparent !important;
+      border-color: rgba(255, 255, 255, 0.06) !important;
+      box-shadow: none !important;
+      opacity: 0.08 !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    .touch-hud-layer.style-invisible .hud-btn-sub,
+    .touch-hud-layer.style-invisible .hud-jump-text,
+    .touch-hud-layer.style-invisible .hud-jump-icon,
+    .touch-hud-layer.style-invisible .hud-icon {
+      opacity: 0.12 !important;
+    }
+
+    /* HUD Customizer Editor Elements */
+    .hud-preview-btn {
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      transition: transform 0.1s ease;
+      cursor: pointer;
+    }
+    .hud-preview-btn.steer-btn {
+      width: 32px;
+      height: 32px;
+      background: rgba(10, 24, 46, 0.88);
+      border: 1.5px solid #00f5d4;
+      color: #00f5d4;
+    }
+    .hud-preview-btn.jump-btn {
+      height: 36px;
+      padding: 0 12px;
+      background: rgba(247, 37, 133, 0.35);
+      border: 1.5px solid #f72585;
+      color: #fff;
+    }
+    .hud-preview-btn:active, .hud-preview-btn.pressed {
+      transform: scale(0.9);
+      background: #00f5d4;
+      color: #020617;
+    }
+
+    .hud-preset-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 8px 10px;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .hud-preset-btn.active {
+      border-color: #00f5d4;
+      background: rgba(0, 245, 212, 0.15);
+      box-shadow: 0 0 14px rgba(0, 245, 212, 0.3);
+      color: #00f5d4;
+    }
+
+    .hud-slider-row {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 7px 10px;
+      margin-bottom: 7px;
+    }
+    .hud-slider-lbl {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 4px;
+    }
+    .hud-range {
+      width: 100%;
+      height: 5px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+    .hud-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #00f5d4;
+      box-shadow: 0 0 8px #00f5d4;
+      cursor: pointer;
+    }
+
+    .hud-style-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 7px 4px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .hud-style-btn.active {
+      background: rgba(0, 245, 212, 0.2);
+      border-color: #00f5d4;
+      color: #00f5d4;
+    }
+
+    .hud-toggle-btn {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1.5px solid #ef4444;
+      color: #ef4444;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 9.5px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .hud-toggle-btn.active {
+      background: rgba(0, 245, 212, 0.22);
+      border-color: #00f5d4;
+      color: #00f5d4;
+      box-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
+    }
+
 </style>
 </head>
 <body>
@@ -1315,6 +1636,39 @@
   <main class="stage" id="stageArea">
     <canvas id="gameCanvas"></canvas>
 
+    <!-- INTERACTIVE MOBILE TOUCH HUD & CONTROLS -->
+    <div class="touch-hud-layer hidden" id="touchHudLayer">
+      <!-- Dynamic Touch Ripple Container -->
+      <div class="touch-ripple-layer" id="touchRippleLayer"></div>
+
+      <!-- Left Steer Group -->
+      <div class="hud-cluster hud-cluster-steer" id="hudSteerCluster">
+        <button type="button" class="hud-btn hud-btn-steer" id="hudBtnLeft" aria-label="Steer Left">
+          <div class="hud-btn-inner">
+            <svg viewBox="0 0 24 24" class="hud-icon"><path d="M15 19l-7-7 7-7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="hud-btn-sub">LEFT</span>
+        </button>
+        <button type="button" class="hud-btn hud-btn-steer" id="hudBtnRight" aria-label="Steer Right">
+          <div class="hud-btn-inner">
+            <svg viewBox="0 0 24 24" class="hud-icon"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span class="hud-btn-sub">RIGHT</span>
+        </button>
+      </div>
+
+      <!-- Jump Action Group -->
+      <div class="hud-cluster hud-cluster-jump" id="hudJumpCluster">
+        <button type="button" class="hud-btn hud-btn-jump" id="hudBtnJump" aria-label="Jump / Boost">
+          <div class="hud-btn-inner">
+            <span class="hud-jump-icon">🚀</span>
+            <span class="hud-jump-text">JUMP</span>
+          </div>
+          <span class="hud-btn-sub" id="hudJumpSub">TAP / HOLD</span>
+        </button>
+      </div>
+    </div>
+
     <!-- IN-GAME CONTROL SWITCHER + POP-UP PREVIEW BUTTON -->
     <div class="ctrl-quick-bar">
       <button type="button" class="ctrl-quick-pill" id="btnQuickCtrl" title="Steuerung sofort wechseln">
@@ -1323,6 +1677,9 @@
       </button>
       <button type="button" class="ctrl-info-mini" id="btnQuickCtrlInfo" title="Steuerungs-Vorschau anzeigen">
         INFO ⓘ
+      </button>
+      <button type="button" class="ctrl-info-mini" id="btnQuickHudEditor" style="border-color:#ffd166; color:#ffd166; font-weight:900;" title="Tasten-Layout &amp; HUD anpassen">
+        🛠️ HUD
       </button>
     </div>
 
@@ -1468,6 +1825,11 @@
           <span style="color:#94a3b8;font-size:7.5px;">INFO ⓘ = VORSCHAU</span>
         </div>
         <div class="ctrl-mode-grid" id="ctrlModeGrid"></div>
+        <button type="button" class="primary-btn" id="btnOpenHudEditor" style="width:100%; margin:8px 0 12px; background:linear-gradient(135deg, #00f5d4, #7e22ce); box-shadow:0 0 16px rgba(0,245,212,0.35); font-size:11px; padding:10px 14px; display:flex; align-items:center; justify-content:center; gap:8px;">
+          <span style="font-size:16px;">🎮</span>
+          <span>TASTEN-LAYOUT &amp; HUD ANPASSEN</span>
+          <span style="font-size:9px; background:rgba(0,0,0,0.35); padding:2px 7px; border-radius:10px; color:#ffd166; font-weight:900;">EDITOR</span>
+        </button>
 
         <div class="section-lbl">
           <span>2. SPIELMODUS &amp; TEMPO-KALIBRIERUNG</span>
@@ -1492,6 +1854,153 @@
         </div>
       </div>
     </div>
+
+    <!-- ======================================================================
+         MANUAL HUD CUSTOMIZER / BUTTON EDITOR MODAL ('HUD-EDITOR')
+         ====================================================================== -->
+    <div class="preview-modal-backdrop hidden" id="hudEditorModalBackdrop" style="z-index: 97;">
+      <div class="preview-card" style="max-height:92vh; overflow-y:auto; width:94%; max-width:460px; padding:16px;">
+        <!-- Header -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(0,245,212,0.25); padding-bottom:8px;">
+          <div>
+            <h2 style="font-size:15px; font-weight:900; color:#00f5d4; margin:0; display:flex; align-items:center; gap:6px;">
+              <span>🎮</span> TASTEN-LAYOUT &amp; HUD-EDITOR
+            </h2>
+            <p style="font-size:8.5px; color:#cbd5e1; margin:2px 0 0;">Passe Größe, Position, Spacing &amp; Style perfekt an dein Smartphone an.</p>
+          </div>
+          <button type="button" class="secondary-btn" id="btnCloseHudEditor" style="width:30px; height:30px; padding:0; font-size:16px; border-radius:50%;">✕</button>
+        </div>
+
+        <!-- Live Interactive Preview Stage -->
+        <div style="position:relative; width:100%; height:160px; background:radial-gradient(circle at 50% 60%, rgba(0,245,212,0.12), rgba(6,12,24,0.96)); border:1.5px solid rgba(0,245,212,0.4); border-radius:14px; overflow:hidden; margin-bottom:12px; box-shadow:inset 0 0 20px rgba(0,0,0,0.8);" id="hudEditorPreviewStage">
+          <!-- Mini Climber Simulator in Preview -->
+          <div style="position:absolute; top:24px; left:50%; transform:translateX(-50%); text-align:center; pointer-events:none;">
+            <span style="font-size:22px; filter:drop-shadow(0 0 8px #00f5d4); display:inline-block; transition:transform 0.15s ease;" id="previewMiniClimber">🏃</span>
+            <div style="font-size:8px; font-weight:900; color:#00f5d4; font-family:monospace; margin-top:2px;">LIVE-TEST (TIPPEN ZUM TESTEN)</div>
+          </div>
+          <!-- Mini Tower Walls -->
+          <div style="position:absolute; left:0; top:0; bottom:0; width:14px; background:#091024; border-right:2px solid rgba(0,245,212,0.3);"></div>
+          <div style="position:absolute; right:0; top:0; bottom:0; width:14px; background:#091024; border-left:2px solid rgba(0,245,212,0.3);"></div>
+          
+          <!-- Interactive Preview Clusters (Can be dragged or tapped!) -->
+          <div id="previewSteerCluster" style="position:absolute; display:flex; gap:8px; align-items:center; cursor:move; user-select:none; touch-action:none; bottom:16px; left:20px;">
+            <div class="hud-preview-btn steer-btn" id="previewBtnLeft">◀</div>
+            <div class="hud-preview-btn steer-btn" id="previewBtnRight">▶</div>
+          </div>
+          <div id="previewJumpCluster" style="position:absolute; display:flex; align-items:center; cursor:move; user-select:none; touch-action:none; bottom:16px; right:20px;">
+            <div class="hud-preview-btn jump-btn" id="previewBtnJump">🚀 JUMP</div>
+          </div>
+        </div>
+
+        <!-- Layout Presets Grid -->
+        <div class="section-lbl">
+          <span>1. SCHNELL-PRESETS</span>
+          <span style="color:#00f5d4;font-size:8px;">1-TAP LAYOUT</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:6px; margin-bottom:12px;" id="hudPresetGrid">
+          <button type="button" class="hud-preset-btn active" data-preset="arcade">
+            <span style="font-size:14px;">🕹️</span>
+            <div style="text-align:left;">
+              <div style="font-weight:900; font-size:10px;">Arcade Split</div>
+              <div style="font-size:7.5px; opacity:0.8;">Links L/R, Rechts Jump</div>
+            </div>
+          </button>
+          <button type="button" class="hud-preset-btn" data-preset="righty">
+            <span style="font-size:14px;">👉</span>
+            <div style="text-align:left;">
+              <div style="font-weight:900; font-size:10px;">Rechtshänder</div>
+              <div style="font-size:7.5px; opacity:0.8;">Ergonomischer Jump-Fokus</div>
+            </div>
+          </button>
+          <button type="button" class="hud-preset-btn" data-preset="lefty">
+            <span style="font-size:14px;">👈</span>
+            <div style="text-align:left;">
+              <div style="font-weight:900; font-size:10px;">Linkshänder</div>
+              <div style="font-size:7.5px; opacity:0.8;">Jump links, L/R rechts</div>
+            </div>
+          </button>
+          <button type="button" class="hud-preset-btn" data-preset="fullscreen">
+            <span style="font-size:14px;">📱</span>
+            <div style="text-align:left;">
+              <div style="font-weight:900; font-size:10px;">Fullscreen Zones</div>
+              <div style="font-size:7.5px; opacity:0.8;">Breite Display-Touchzonen</div>
+            </div>
+          </button>
+        </div>
+
+        <!-- Sliders Section -->
+        <div class="section-lbl">
+          <span>2. FEINJUSTIERUNG &amp; POSITION</span>
+          <span style="color:#ffbe0b;font-size:8px;">LIVE-VORSCHAU</span>
+        </div>
+
+        <!-- Slider 1: Button Size -->
+        <div class="hud-slider-row">
+          <div class="hud-slider-lbl">
+            <span>Tastengröße (Size)</span>
+            <span id="txtHudSize" style="color:#00f5d4; font-weight:900;">100%</span>
+          </div>
+          <input type="range" id="sliderHudSize" min="80" max="150" step="5" value="100" class="hud-range">
+        </div>
+
+        <!-- Slider 2: Opacity -->
+        <div class="hud-slider-row">
+          <div class="hud-slider-lbl">
+            <span>Deckkraft / Sichtbarkeit</span>
+            <span id="txtHudOpacity" style="color:#00f5d4; font-weight:900;">85%</span>
+          </div>
+          <input type="range" id="sliderHudOpacity" min="20" max="100" step="5" value="85" class="hud-range">
+        </div>
+
+        <!-- Slider 3: Vertical Height / Bottom Offset -->
+        <div class="hud-slider-row">
+          <div class="hud-slider-lbl">
+            <span>Höhe von unten (Bottom Offset)</span>
+            <span id="txtHudBottom" style="color:#00f5d4; font-weight:900;">22px</span>
+          </div>
+          <input type="range" id="sliderHudBottom" min="0" max="120" step="2" value="22" class="hud-range">
+        </div>
+
+        <!-- Slider 4: Horizontal Spacing -->
+        <div class="hud-slider-row">
+          <div class="hud-slider-lbl">
+            <span>Tastenabstand (Spacing)</span>
+            <span id="txtHudSpacing" style="color:#00f5d4; font-weight:900;">14px</span>
+          </div>
+          <input type="range" id="sliderHudSpacing" min="0" max="50" step="2" value="14" class="hud-range">
+        </div>
+
+        <!-- HUD Style Mode Selector -->
+        <div class="section-lbl" style="margin-top:10px;">
+          <span>3. OPTIK-STIL &amp; EFFEKTE</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; margin-bottom:12px;" id="hudStyleModeRow">
+          <button type="button" class="hud-style-btn active" data-style="neon">🌟 Neon Arcade</button>
+          <button type="button" class="hud-style-btn" data-style="minimal">💎 Minimalist</button>
+          <button type="button" class="hud-style-btn" data-style="invisible">👻 Unsichtbar</button>
+        </div>
+
+        <!-- Jump Guide Cue Toggle -->
+        <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.04); border:1px solid rgba(0,245,212,0.2); border-radius:12px; padding:10px 12px; margin-bottom:14px;">
+          <div>
+            <div style="font-size:10.5px; font-weight:900; color:#fff;">Sprung-Hilfe &amp; Wand-Kick Cue</div>
+            <div style="font-size:8px; color:#cbd5e1;">Optische Bounce-Ringe &amp; Timing-Hinweis</div>
+          </div>
+          <button type="button" class="hud-toggle-btn active" id="btnToggleJumpGuide">AN</button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display:flex; justify-content:space-between; gap:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:12px;">
+          <button type="button" class="secondary-btn" id="btnResetHudConfig" style="width:38%; font-size:10px; color:#cbd5e1;">
+            🔄 STANDARD
+          </button>
+          <button type="button" class="primary-btn" id="btnSaveHudConfig" style="width:58%; font-size:11px; padding:10px 14px; background:linear-gradient(135deg, #00f5d4, #3b82f6); color:#020617; font-weight:900;">
+            ✓ SPEICHERN
+          </button>
+        </div>
+      </div>
+    </div>
+
 
     <!-- ======================================================================
          UNIFIED REWARDS SUBMENU HUB MODAL
@@ -2183,8 +2692,10 @@
 
   function applyControlLayout() {
     const modeObj = CONTROL_MODES.find(m => m.id === controlMode) || CONTROL_MODES[0];
-    document.getElementById('quickCtrlName').textContent = modeObj.short;
+    const quickCtrlEl = document.getElementById('quickCtrlName');
+    if (quickCtrlEl) quickCtrlEl.textContent = modeObj.short;
     try { localStorage.setItem('vt_apex_v5_ctrl', controlMode); } catch (e) {}
+    if (typeof updateTouchHudVisibility === 'function') updateTouchHudVisibility();
   }
 
   // ============================================================================
@@ -2550,7 +3061,571 @@
     audio.init();
   }
 
-  function syncDpadUI() {}
+    // ============================================================================
+  // INTERACTIVE MOBILE TOUCH HUD & CUSTOMIZER ENGINE (VT HUD v1.9.0)
+  // ============================================================================
+  const DEFAULT_HUD_CONFIG = {
+    preset: 'arcade', // 'arcade', 'righty', 'lefty', 'fullscreen'
+    size: 100, // 80 to 150 (%)
+    opacity: 85, // 20 to 100 (%)
+    styleMode: 'neon', // 'neon', 'minimal', 'invisible'
+    bottomOffset: 22, // 0 to 120 (px)
+    horizontalSpacing: 14, // 0 to 50 (px)
+    jumpGuide: true,
+    steerLeft: 14, // px
+    jumpRight: 14  // px
+  };
+
+  let hudConfig = { ...DEFAULT_HUD_CONFIG };
+
+  function loadHudConfig() {
+    try {
+      const raw = localStorage.getItem('vt_hud_config');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        hudConfig = { ...DEFAULT_HUD_CONFIG, ...parsed };
+      }
+    } catch (e) {}
+  }
+  loadHudConfig();
+
+  function saveHudConfig() {
+    try {
+      localStorage.setItem('vt_hud_config', JSON.stringify(hudConfig));
+    } catch (e) {}
+  }
+
+  // Dynamic Neon Touch Ripple Waves Generator
+  function createTouchRipple(clientX, clientY, color = '#00f5d4') {
+    const container = document.getElementById('touchRippleLayer');
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    const ripple = document.createElement('div');
+    ripple.className = 'touch-ripple-circle';
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+    ripple.style.borderColor = color;
+    ripple.style.boxShadow = `0 0 20px ${color}, inset 0 0 10px ${color}`;
+    container.appendChild(ripple);
+
+    setTimeout(() => {
+      if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+    }, 400);
+  }
+
+  // Apply HUD Configuration to Gameplay DOM and Editor Previews
+  function applyHudConfig() {
+    const layer = document.getElementById('touchHudLayer');
+    const steerCl = document.getElementById('hudSteerCluster');
+    const jumpCl = document.getElementById('hudJumpCluster');
+    if (!layer || !steerCl || !jumpCl) return;
+
+    // Apply CSS Variables
+    layer.style.setProperty('--hud-size', String(hudConfig.size / 100));
+    layer.style.setProperty('--hud-opacity', String(hudConfig.opacity / 100));
+    layer.style.setProperty('--hud-bottom', `${hudConfig.bottomOffset}px`);
+    layer.style.setProperty('--hud-spacing', `${hudConfig.horizontalSpacing}px`);
+
+    // Style mode classes
+    layer.classList.remove('style-neon', 'style-minimal', 'style-invisible');
+    layer.classList.add(`style-${hudConfig.styleMode}`);
+
+    // Preset positions & layout arrangement
+    if (hudConfig.preset === 'lefty') {
+      // Lefty: Jump on left, Steer on right
+      jumpCl.style.left = '14px';
+      jumpCl.style.right = 'auto';
+      steerCl.style.right = '14px';
+      steerCl.style.left = 'auto';
+    } else if (hudConfig.preset === 'righty') {
+      // Right-handed focus: Steer on left (10px), Jump slightly higher and inward
+      steerCl.style.left = '10px';
+      steerCl.style.right = 'auto';
+      jumpCl.style.right = '18px';
+      jumpCl.style.left = 'auto';
+      jumpCl.style.bottom = `calc(var(--hud-bottom) + 10px + env(safe-area-inset-bottom, 0px))`;
+    } else if (hudConfig.preset === 'fullscreen') {
+      // Fullscreen touch zones: spread wide
+      steerCl.style.left = '8px';
+      steerCl.style.right = 'auto';
+      jumpCl.style.right = '8px';
+      jumpCl.style.left = 'auto';
+      jumpCl.style.bottom = `calc(var(--hud-bottom) + env(safe-area-inset-bottom, 0px))`;
+    } else {
+      // Arcade Split (Default)
+      steerCl.style.left = '14px';
+      steerCl.style.right = 'auto';
+      jumpCl.style.right = '14px';
+      jumpCl.style.left = 'auto';
+      jumpCl.style.bottom = `calc(var(--hud-bottom) + env(safe-area-inset-bottom, 0px))`;
+    }
+
+    // Update Editor Interactive Preview if Modal is present
+    updateEditorPreview();
+  }
+
+  function updateTouchHudVisibility() {
+    const layer = document.getElementById('touchHudLayer');
+    if (!layer) return;
+    if (state === 'PLAY') {
+      layer.classList.remove('hidden');
+    } else {
+      layer.classList.add('hidden');
+      keys.left = false;
+      keys.right = false;
+      keys.jumpHeld = false;
+      activeHudTouches.clear();
+      document.querySelectorAll('.hud-btn').forEach(b => b.classList.remove('pressed'));
+    }
+  }
+
+  function syncDpadUI() {
+    const btnL = document.getElementById('hudBtnLeft');
+    const btnR = document.getElementById('hudBtnRight');
+    const btnJ = document.getElementById('hudBtnJump');
+    if (btnL) btnL.classList.toggle('pressed', !!keys.left);
+    if (btnR) btnR.classList.toggle('pressed', !!keys.right);
+    if (btnJ) btnJ.classList.toggle('pressed', !!keys.jumpHeld);
+  }
+
+  // Multi-Touch Tracking for Zero Conflict / Zero Stuck Keys
+  const activeHudTouches = new Map(); // touchId -> 'left' | 'right' | 'jump'
+
+  function setupHudButtons() {
+    const btnL = document.getElementById('hudBtnLeft');
+    const btnR = document.getElementById('hudBtnRight');
+    const btnJ = document.getElementById('hudBtnJump');
+    if (!btnL || !btnR || !btnJ) return;
+
+    // Helper to evaluate steer touch point for seamless thumb slide
+    function handleSteerTouch(t, el) {
+      if (!t) return;
+      const rectL = btnL.getBoundingClientRect();
+      const rectR = btnR.getBoundingClientRect();
+      const x = t.clientX, y = t.clientY;
+
+      const overL = x >= rectL.left - 10 && x <= rectL.right + 6 && y >= rectL.top - 16 && y <= rectL.bottom + 16;
+      const overR = x >= rectR.left - 6 && x <= rectR.right + 10 && y >= rectR.top - 16 && y <= rectR.bottom + 16;
+
+      if (overL) {
+        keys.left = true;
+        keys.right = false;
+        btnL.classList.add('pressed');
+        btnR.classList.remove('pressed');
+        activeHudTouches.set(t.identifier, 'left');
+      } else if (overR) {
+        keys.right = true;
+        keys.left = false;
+        btnR.classList.add('pressed');
+        btnL.classList.remove('pressed');
+        activeHudTouches.set(t.identifier, 'right');
+      } else {
+        // Thumb moved outside cluster
+        if (activeHudTouches.get(t.identifier) === 'left') {
+          keys.left = false;
+          btnL.classList.remove('pressed');
+        } else if (activeHudTouches.get(t.identifier) === 'right') {
+          keys.right = false;
+          btnR.classList.remove('pressed');
+        }
+        activeHudTouches.delete(t.identifier);
+      }
+    }
+
+    // Touchstart on Steer Left
+    btnL.addEventListener('touchstart', e => {
+      if (state !== 'PLAY') return;
+      if (e.cancelable) e.preventDefault();
+      audio.init();
+      triggerHaptic(12);
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        activeHudTouches.set(t.identifier, 'left');
+        keys.left = true;
+        keys.right = false;
+        btnL.classList.add('pressed');
+        createTouchRipple(t.clientX, t.clientY, '#00f5d4');
+      }
+    }, { passive: false });
+
+    // Touchstart on Steer Right
+    btnR.addEventListener('touchstart', e => {
+      if (state !== 'PLAY') return;
+      if (e.cancelable) e.preventDefault();
+      audio.init();
+      triggerHaptic(12);
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        activeHudTouches.set(t.identifier, 'right');
+        keys.right = true;
+        keys.left = false;
+        btnR.classList.add('pressed');
+        createTouchRipple(t.clientX, t.clientY, '#00f5d4');
+      }
+    }, { passive: false });
+
+    // Touchstart on Jump
+    btnJ.addEventListener('touchstart', e => {
+      if (state !== 'PLAY') return;
+      if (e.cancelable) e.preventDefault();
+      audio.init();
+      triggerHaptic(16);
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        activeHudTouches.set(t.identifier, 'jump');
+        keys.jumpHeld = true;
+        triggerJump();
+        btnJ.classList.add('pressed');
+        createTouchRipple(t.clientX, t.clientY, '#f72585');
+      }
+    }, { passive: false });
+
+    // Document-level touchmove for smooth thumb-rolling between Left and Right
+    window.addEventListener('touchmove', e => {
+      if (state !== 'PLAY') return;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        const role = activeHudTouches.get(t.identifier);
+        if (role === 'left' || role === 'right') {
+          handleSteerTouch(t, null);
+        }
+      }
+    }, { passive: true });
+
+    // Touchend / Touchcancel cleanup
+    function onTouchEnd(e) {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        const t = e.changedTouches[i];
+        const role = activeHudTouches.get(t.identifier);
+        if (role === 'left') {
+          keys.left = false;
+          btnL.classList.remove('pressed');
+          activeHudTouches.delete(t.identifier);
+        } else if (role === 'right') {
+          keys.right = false;
+          btnR.classList.remove('pressed');
+          activeHudTouches.delete(t.identifier);
+        } else if (role === 'jump') {
+          keys.jumpHeld = false;
+          btnJ.classList.remove('pressed');
+          activeHudTouches.delete(t.identifier);
+        }
+      }
+      if (e.touches.length === 0) {
+        keys.left = false;
+        keys.right = false;
+        keys.jumpHeld = false;
+        btnL.classList.remove('pressed');
+        btnR.classList.remove('pressed');
+        btnJ.classList.remove('pressed');
+        activeHudTouches.clear();
+      }
+    }
+
+    window.addEventListener('touchend', onTouchEnd);
+    window.addEventListener('touchcancel', onTouchEnd);
+  }
+
+  // ============================================================================
+  // HUD-EDITOR MODAL & INTERACTIVE LIVE PREVIEW CONTROLLER
+  // ============================================================================
+  function updateEditorPreview() {
+    const previewStage = document.getElementById('hudEditorPreviewStage');
+    const pSteer = document.getElementById('previewSteerCluster');
+    const pJump = document.getElementById('previewJumpCluster');
+    if (!previewStage || !pSteer || !pJump) return;
+
+    const scale = (hudConfig.size / 100);
+    pSteer.style.transform = `scale(${scale * 0.9})`;
+    pJump.style.transform = `scale(${scale * 0.9})`;
+    pSteer.style.opacity = String(hudConfig.opacity / 100);
+    pJump.style.opacity = String(hudConfig.opacity / 100);
+
+    const bOffset = Math.max(6, Math.min(48, Math.round(hudConfig.bottomOffset * 0.38)));
+    pSteer.style.bottom = `${bOffset}px`;
+    pJump.style.bottom = `${bOffset}px`;
+
+    pSteer.style.gap = `${Math.round(hudConfig.horizontalSpacing * 0.6)}px`;
+
+    if (hudConfig.preset === 'lefty') {
+      pJump.style.left = '20px';
+      pJump.style.right = 'auto';
+      pSteer.style.right = '20px';
+      pSteer.style.left = 'auto';
+    } else {
+      pSteer.style.left = '20px';
+      pSteer.style.right = 'auto';
+      pJump.style.right = '20px';
+      pJump.style.left = 'auto';
+    }
+  }
+
+  function setupHudEditor() {
+    const modal = document.getElementById('hudEditorModalBackdrop');
+    const btnOpenFromSettings = document.getElementById('btnOpenHudEditor');
+    const btnQuickHud = document.getElementById('btnQuickHudEditor');
+    const btnClose = document.getElementById('btnCloseHudEditor');
+    const btnSave = document.getElementById('btnSaveHudConfig');
+    const btnReset = document.getElementById('btnResetHudConfig');
+
+    const sliderSize = document.getElementById('sliderHudSize');
+    const sliderOpacity = document.getElementById('sliderHudOpacity');
+    const sliderBottom = document.getElementById('sliderHudBottom');
+    const sliderSpacing = document.getElementById('sliderHudSpacing');
+
+    const txtSize = document.getElementById('txtHudSize');
+    const txtOpacity = document.getElementById('txtHudOpacity');
+    const txtBottom = document.getElementById('txtHudBottom');
+    const txtSpacing = document.getElementById('txtHudSpacing');
+
+    const toggleGuide = document.getElementById('btnToggleJumpGuide');
+    const miniClimber = document.getElementById('previewMiniClimber');
+
+    function syncEditorInputs() {
+      if (sliderSize) sliderSize.value = hudConfig.size;
+      if (sliderOpacity) sliderOpacity.value = hudConfig.opacity;
+      if (sliderBottom) sliderBottom.value = hudConfig.bottomOffset;
+      if (sliderSpacing) sliderSpacing.value = hudConfig.horizontalSpacing;
+
+      if (txtSize) txtSize.textContent = `${hudConfig.size}%`;
+      if (txtOpacity) txtOpacity.textContent = `${hudConfig.opacity}%`;
+      if (txtBottom) txtBottom.textContent = `${hudConfig.bottomOffset}px`;
+      if (txtSpacing) txtSpacing.textContent = `${hudConfig.horizontalSpacing}px`;
+
+      // Presets buttons active state
+      document.querySelectorAll('#hudPresetGrid .hud-preset-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-preset') === hudConfig.preset);
+      });
+
+      // Style buttons active state
+      document.querySelectorAll('#hudStyleModeRow .hud-style-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-style') === hudConfig.styleMode);
+      });
+
+      // Jump guide toggle
+      if (toggleGuide) {
+        toggleGuide.classList.toggle('active', !!hudConfig.jumpGuide);
+        toggleGuide.textContent = hudConfig.jumpGuide ? 'AN' : 'AUS';
+      }
+
+      updateEditorPreview();
+    }
+
+    function openHudEditor() {
+      if (!modal) return;
+      loadHudConfig();
+      syncEditorInputs();
+      modal.classList.remove('hidden');
+    }
+
+    function closeHudEditor() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+    }
+
+    if (btnOpenFromSettings) btnOpenFromSettings.addEventListener('click', openHudEditor);
+    if (btnQuickHud) btnQuickHud.addEventListener('click', openHudEditor);
+    if (btnClose) btnClose.addEventListener('click', closeHudEditor);
+
+    // Sliders Real-Time Input
+    if (sliderSize) {
+      sliderSize.addEventListener('input', e => {
+        hudConfig.size = parseInt(e.target.value, 10);
+        txtSize.textContent = `${hudConfig.size}%`;
+        applyHudConfig();
+      });
+    }
+
+    if (sliderOpacity) {
+      sliderOpacity.addEventListener('input', e => {
+        hudConfig.opacity = parseInt(e.target.value, 10);
+        txtOpacity.textContent = `${hudConfig.opacity}%`;
+        applyHudConfig();
+      });
+    }
+
+    if (sliderBottom) {
+      sliderBottom.addEventListener('input', e => {
+        hudConfig.bottomOffset = parseInt(e.target.value, 10);
+        txtBottom.textContent = `${hudConfig.bottomOffset}px`;
+        applyHudConfig();
+      });
+    }
+
+    if (sliderSpacing) {
+      sliderSpacing.addEventListener('input', e => {
+        hudConfig.horizontalSpacing = parseInt(e.target.value, 10);
+        txtSpacing.textContent = `${hudConfig.horizontalSpacing}px`;
+        applyHudConfig();
+      });
+    }
+
+    // Presets Grid
+    document.querySelectorAll('#hudPresetGrid .hud-preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const pr = btn.getAttribute('data-preset');
+        hudConfig.preset = pr;
+        if (pr === 'arcade') {
+          hudConfig.size = 100;
+          hudConfig.opacity = 85;
+          hudConfig.bottomOffset = 22;
+          hudConfig.horizontalSpacing = 14;
+          hudConfig.styleMode = 'neon';
+        } else if (pr === 'righty') {
+          hudConfig.size = 110;
+          hudConfig.opacity = 90;
+          hudConfig.bottomOffset = 26;
+          hudConfig.horizontalSpacing = 16;
+          hudConfig.styleMode = 'neon';
+        } else if (pr === 'lefty') {
+          hudConfig.size = 100;
+          hudConfig.opacity = 85;
+          hudConfig.bottomOffset = 22;
+          hudConfig.horizontalSpacing = 14;
+          hudConfig.styleMode = 'neon';
+        } else if (pr === 'fullscreen') {
+          hudConfig.size = 125;
+          hudConfig.opacity = 45;
+          hudConfig.bottomOffset = 18;
+          hudConfig.horizontalSpacing = 20;
+          hudConfig.styleMode = 'minimal';
+        }
+        syncEditorInputs();
+        applyHudConfig();
+        triggerHaptic(15);
+      });
+    });
+
+    // Style Modes Grid
+    document.querySelectorAll('#hudStyleModeRow .hud-style-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        hudConfig.styleMode = btn.getAttribute('data-style');
+        syncEditorInputs();
+        applyHudConfig();
+        triggerHaptic(12);
+      });
+    });
+
+    // Toggle Jump Guide
+    if (toggleGuide) {
+      toggleGuide.addEventListener('click', () => {
+        hudConfig.jumpGuide = !hudConfig.jumpGuide;
+        syncEditorInputs();
+        applyHudConfig();
+        triggerHaptic(12);
+      });
+    }
+
+    // Reset to Default
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        hudConfig = { ...DEFAULT_HUD_CONFIG };
+        syncEditorInputs();
+        applyHudConfig();
+        saveHudConfig();
+        triggerHaptic(20);
+      });
+    }
+
+    // Save and Close
+    if (btnSave) {
+      btnSave.addEventListener('click', () => {
+        saveHudConfig();
+        applyHudConfig();
+        closeHudEditor();
+        triggerHaptic(25);
+        if (typeof showIngameControlToast === 'function') {
+          const toast = document.getElementById('ingameCtrlToast');
+          if (toast) {
+            document.getElementById('toastTitle').textContent = 'HUD-LAYOUT GESPEICHERT';
+            document.getElementById('toastSub').textContent = `${hudConfig.preset.toUpperCase()} • ${hudConfig.size}% GRÖSSE • ${hudConfig.opacity}% OPACITY`;
+            toast.classList.add('visible');
+            setTimeout(() => toast.classList.remove('visible'), 2400);
+          }
+        }
+      });
+    }
+
+    // Live Test Tap & Haptic Feedback in Editor Preview Stage
+    function makeMiniClimberBounce() {
+      if (!miniClimber) return;
+      miniClimber.style.transform = 'translateY(-14px) scale(1.15)';
+      setTimeout(() => {
+        miniClimber.style.transform = 'translateY(0) scale(1)';
+      }, 160);
+    }
+
+    const previewBtnL = document.getElementById('previewBtnLeft');
+    const previewBtnR = document.getElementById('previewBtnRight');
+    const previewBtnJ = document.getElementById('previewBtnJump');
+
+    [previewBtnL, previewBtnR].forEach(btn => {
+      if (btn) {
+        btn.addEventListener('pointerdown', e => {
+          e.stopPropagation();
+          triggerHaptic(12);
+          makeMiniClimberBounce();
+          createTouchRipple(e.clientX, e.clientY, '#00f5d4');
+        });
+      }
+    });
+
+    if (previewBtnJ) {
+      previewBtnJ.addEventListener('pointerdown', e => {
+        e.stopPropagation();
+        triggerHaptic(18);
+        makeMiniClimberBounce();
+        createTouchRipple(e.clientX, e.clientY, '#f72585');
+      });
+    }
+
+    // Drag and Drop interactive positioning for clusters in preview
+    let draggingCluster = null;
+    let dragStartY = 0;
+    let dragStartOffset = 0;
+
+    function startDrag(e, cluster) {
+      draggingCluster = cluster;
+      dragStartY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+      dragStartOffset = hudConfig.bottomOffset;
+      e.stopPropagation();
+    }
+
+    const pSteer = document.getElementById('previewSteerCluster');
+    const pJump = document.getElementById('previewJumpCluster');
+
+    if (pSteer) {
+      pSteer.addEventListener('pointerdown', e => startDrag(e, 'steer'));
+    }
+    if (pJump) {
+      pJump.addEventListener('pointerdown', e => startDrag(e, 'jump'));
+    }
+
+    window.addEventListener('pointermove', e => {
+      if (!draggingCluster) return;
+      const cy = e.clientY || 0;
+      const dy = dragStartY - cy; // Moving up increases bottom offset
+      const newBottom = Math.max(0, Math.min(120, Math.round(dragStartOffset + dy * 0.8)));
+      hudConfig.bottomOffset = newBottom;
+      if (sliderBottom) sliderBottom.value = newBottom;
+      if (txtBottom) txtBottom.textContent = `${newBottom}px`;
+      applyHudConfig();
+    });
+
+    window.addEventListener('pointerup', () => {
+      draggingCluster = null;
+    });
+  }
+
+  // Initial HUD Setup
+  setupHudButtons();
+  setupHudEditor();
+  applyHudConfig();
+  updateTouchHudVisibility();
+
 
   window.addEventListener('pointerup', () => {
     keys.left = false;
@@ -2572,6 +3647,7 @@
     for (let i = 0; i < e.changedTouches.length; i++) {
       const t = e.changedTouches[i];
       canvasTouchStartY = t.clientY;
+      createTouchRipple(t.clientX, t.clientY, (relY < 0.62 || relX > 0.7) ? '#f72585' : '#00f5d4');
       const relX = Math.max(0, Math.min(1, (t.clientX - rect.left) / rect.width));
       const relY = Math.max(0, Math.min(1, (t.clientY - rect.top) / rect.height));
       activeTouchX = relX * W;
@@ -3745,6 +4821,75 @@
         ctx.beginPath();
         ctx.arc(Math.round(player.x), Math.round(player.y), 24, 0, Math.PI * 2);
         ctx.stroke();
+      }
+
+      // Interactive In-Game Jump Guide & Visual Indicators
+      if (player && hudConfig && hudConfig.jumpGuide && state === 'PLAY') {
+        const isGroundJump = player.onGround || player.coyote > 0;
+        const speedRatio = Math.min(1, Math.abs(player.vx) / (maxVx || 8));
+
+        // 1. Kinetic Launch Rings & Jump Prompt under Climber
+        if (isGroundJump) {
+          const pulse = (Math.sin(Date.now() * 0.015) + 1) * 0.5;
+          const ringR = 16 + speedRatio * 12 + pulse * 4;
+          ctx.save();
+          ctx.strokeStyle = speedRatio > 0.6 ? '#ffd166' : '#00f5d4';
+          ctx.lineWidth = 2;
+          ctx.shadowColor = speedRatio > 0.6 ? '#ffd166' : '#00f5d4';
+          ctx.shadowBlur = 10 + pulse * 6;
+          ctx.beginPath();
+          ctx.ellipse(Math.round(player.x), Math.round(player.y + player.r - 2), ringR, ringR * 0.42, 0, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Upward chevron indicator when building high combo energy
+          if (speedRatio > 0.5) {
+            ctx.fillStyle = speedRatio > 0.75 ? '#f72585' : '#00f5d4';
+            ctx.font = '900 11px sans-serif';
+            ctx.textAlign = 'center';
+            const bounceY = Math.round(player.y - player.r - 12 - pulse * 5);
+            ctx.fillText('▲ JUMP!', Math.round(player.x), bounceY);
+          }
+          ctx.restore();
+        }
+
+        // 2. Wall-Kick Rebound Indicator
+        const nearWall = player.x <= WALL + 28 || player.x >= W - WALL - 28;
+        if (!player.wallBounceUsed && nearWall && Math.abs(player.vx) >= 3.0 * baseSpeedRatio) {
+          ctx.save();
+          const wallX = player.x <= WALL + 28 ? WALL : W - WALL;
+          const pulse = (Math.sin(Date.now() * 0.02) + 1) * 0.5;
+          ctx.strokeStyle = '#00f5d4';
+          ctx.lineWidth = 2.5;
+          ctx.shadowColor = '#00f5d4';
+          ctx.shadowBlur = 14;
+          ctx.beginPath();
+          ctx.arc(wallX, Math.round(player.y), 18 + pulse * 8, -Math.PI / 2, Math.PI / 2, player.x > W / 2);
+          ctx.stroke();
+
+          ctx.font = '900 10px monospace';
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowColor = '#00f5d4';
+          ctx.shadowBlur = 8;
+          ctx.textAlign = player.x <= WALL + 28 ? 'left' : 'right';
+          ctx.fillText('⚡ REBOUND!', player.x <= WALL + 28 ? WALL + 6 : W - WALL - 6, Math.round(player.y) - 16);
+          ctx.restore();
+        }
+      }
+
+      // Synchronize HUD Jump Button dynamic bounce-ready and wall-ready aura
+      const btnJumpEl = document.getElementById('hudBtnJump');
+      if (btnJumpEl) {
+        const isGround = player && (player.onGround || player.coyote > 0);
+        const isWallReady = player && !player.wallBounceUsed && (player.x <= WALL + 30 || player.x >= W - WALL - 30) && Math.abs(player.vx) >= 3.0 * baseSpeedRatio;
+        if (isWallReady) {
+          btnJumpEl.classList.add('wall-ready');
+          btnJumpEl.classList.remove('bounce-ready');
+        } else if (isGround) {
+          btnJumpEl.classList.add('bounce-ready');
+          btnJumpEl.classList.remove('wall-ready');
+        } else {
+          btnJumpEl.classList.remove('bounce-ready', 'wall-ready');
+        }
       }
 
       drawCharacterBody(Math.round(player.x), Math.round(player.y), player.angle, player.scaleX, player.scaleY, 1);
