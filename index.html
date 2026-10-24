@@ -1147,6 +1147,7 @@
         <span class="stat-lbl">CORES</span>
         <span class="stat-val" style="color:#00f5d4;font-weight:900;">💎 <span id="hudCoresVal">15</span></span>
       </div>
+      <button class="icon-btn" id="btnTopFriends" title="Freunde & Rivalen" style="color:#f472b6;font-size:15px;">👥</button>
       <button class="icon-btn" id="btnTopShop" title="Neon Shop & Skins" style="color:#ffd166;font-size:15px;">🛍️</button>
       <button class="icon-btn" id="btnPause" title="Menü / Einstellungen">⚙</button>
       <button class="icon-btn" id="btnToggleVoice" title="Arcade Announcer Stimme an/aus" style="color:#00f5d4;font-size:14px;">🎙️</button>
@@ -1261,6 +1262,11 @@
           </button>
         </div>
 
+        
+        <button type="button" class="secondary-btn" id="btnMenuFriends" style="background:linear-gradient(135deg,rgba(244,114,182,0.22),rgba(59,130,246,0.22));border-color:#f472b6;color:#fff;font-weight:900;margin-bottom:8px;box-shadow:0 0 14px rgba(244,114,182,0.3);display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span style="font-size:16px;">👥</span>
+          <span>FREUNDE &amp; RIVALEN (LIVE-RANGLISTE)</span>
+        </button>
         <button type="button" class="primary-btn" id="btnMenuShop" style="background: linear-gradient(135deg, #ffd166, #f72585); color:#020617; font-weight:900; margin-bottom:10px; box-shadow:0 0 16px rgba(255,209,102,0.45);">
           🛍️ NEON SHOP // SKINS, TRAILS &amp; DEALS
         </button>
@@ -1454,6 +1460,73 @@
 
         <div style="text-align:center;font-size:9px;color:#64748b;margin-top:10px;" id="trophiesCountDisplay">
           Freigeschaltet: 0/12 Trophäen
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- ======================================================================
+         FRIENDS & RIVALS HUB MODAL (FREUNDESSYSTEM)
+         ====================================================================== -->
+    <div class="preview-modal-backdrop hidden" id="friendsModalBackdrop" style="z-index: 97;">
+      <div class="shop-modal-card" style="max-width: 380px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:24px;">👥</span>
+            <div>
+              <div style="font-size:13px;font-weight:900;color:#f472b6;letter-spacing:0.06em;">FREUNDE &amp; RIVALEN</div>
+              <div style="font-size:9px;color:#94a3b8;">Vergleiche Rekorde &amp; starte 1v1-Duelle!</div>
+            </div>
+          </div>
+          <button type="button" id="btnCloseFriends" style="background:none;border:none;color:#94a3b8;font-size:18px;cursor:pointer;">✕</button>
+        </div>
+
+        <!-- MY PLAYER PROFILE CARD -->
+        <div style="background:linear-gradient(135deg,rgba(244,114,182,0.15),rgba(59,130,246,0.15));border:1.5px solid #f472b6;box-shadow:0 0 16px rgba(244,114,182,0.25);border-radius:12px;padding:10px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:20px;" id="myProfileAvatar">🏃</span>
+              <div>
+                <div style="display:flex;align-items:center;gap:5px;">
+                  <strong style="font-size:12px;color:#fff;" id="myProfileName">Climber</strong>
+                  <button type="button" id="btnEditNickname" style="background:none;border:none;color:#ffd166;cursor:pointer;font-size:11px;" title="Namen ändern">✏️</button>
+                </div>
+                <div style="font-size:8.5px;color:#00f5d4;font-family:ui-monospace,monospace;font-weight:800;" id="myProfileTag">#TAG-0000</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:8px;color:#94a3b8;">DEIN BESTWERT</div>
+              <div style="font-size:11px;font-weight:900;color:#ffd166;"><span id="myProfileFloor">0</span> FL // <span id="myProfileScore">0</span> PTS</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+            <button type="button" class="secondary-btn" id="btnCopyTag" style="padding:6px 8px;font-size:9px;border-color:#00f5d4;color:#00f5d4;font-weight:800;">
+              📋 TAG KOPIEREN
+            </button>
+            <button type="button" class="primary-btn" id="btnShareInviteLink" style="padding:6px 8px;font-size:9px;background:linear-gradient(135deg,#f472b6,#3b82f6);color:#fff;font-weight:900;">
+              📲 FREUND EINLADEN
+            </button>
+          </div>
+        </div>
+
+        <!-- ADD FRIEND INPUT -->
+        <div style="background:rgba(15,23,42,0.7);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:8px 10px;margin-bottom:12px;">
+          <div style="font-size:9px;color:#94a3b8;font-weight:800;margin-bottom:5px;">FREUND PER TAG ODER CODE HINZUFÜGEN:</div>
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="inputFriendTag" placeholder="z.B. TOBI-2026 oder #TAG" style="flex:1;background:#020617;border:1px solid #334155;border-radius:6px;padding:6px 8px;font-size:10px;color:#fff;outline:none;font-family:ui-monospace,monospace;">
+            <button type="button" class="primary-btn" id="btnAddFriend" style="width:auto;padding:6px 12px;font-size:10px;background:linear-gradient(135deg,#00f5d4,#3b82f6);color:#020617;font-weight:900;">
+              + HINZUFÜGEN
+            </button>
+          </div>
+        </div>
+
+        <!-- FRIENDS LEADERBOARD LIST -->
+        <div style="font-size:9px;color:#ffd166;font-weight:900;letter-spacing:0.05em;margin-bottom:6px;">
+          🏆 FREUNDES-RANGLISTE (LIVE)
+        </div>
+        <div id="friendsListArea" style="display:flex;flex-direction:column;gap:6px;max-height:190px;overflow-y:auto;padding-right:2px;margin-bottom:8px;">
+          <!-- Dynamically populated friends list -->
         </div>
       </div>
     </div>
@@ -3556,6 +3629,269 @@
   document.getElementById('btnCloseTrophies').onclick = () => {
     document.getElementById('trophiesModalBackdrop').classList.add('hidden');
   };
+
+  
+  // ============================================================================
+  // SOCIAL FRIENDS & RIVALS SYSTEM (FREUNDESSYSTEM ENGINE)
+  // ============================================================================
+  let myProfile = {
+    nickname: 'ApexClimber',
+    tag: 'APEX-' + Math.floor(1000 + Math.random() * 9000),
+    avatar: '🏃',
+    bestScore: 0,
+    maxFloor: 0
+  };
+
+  try {
+    const sp = JSON.parse(localStorage.getItem('vt_player_profile'));
+    if (sp && sp.tag) {
+      myProfile = { ...myProfile, ...sp };
+    } else {
+      localStorage.setItem('vt_player_profile', JSON.stringify(myProfile));
+    }
+  } catch (e) {}
+
+  let friendsList = [
+    { name: 'Tobi', tag: 'TOBI-2026', avatar: '⚡', maxFloor: 125, bestScore: 68500, status: 'Online' },
+    { name: 'CyberNinja', tag: 'NINJA-99', avatar: '🥷', maxFloor: 98, bestScore: 49200, status: 'Offline' }
+  ];
+
+  try {
+    const sf = JSON.parse(localStorage.getItem('vt_friends_list'));
+    if (Array.isArray(sf) && sf.length > 0) friendsList = sf;
+  } catch (e) {}
+
+  function saveFriendsData() {
+    try {
+      localStorage.setItem('vt_player_profile', JSON.stringify(myProfile));
+      localStorage.setItem('vt_friends_list', JSON.stringify(friendsList));
+    } catch (e) {}
+  }
+
+  function updateMyProfileUI() {
+    myProfile.bestScore = bestScore;
+    myProfile.maxFloor = Math.max(myProfile.maxFloor, maxFloor);
+    saveFriendsData();
+
+    const elName = document.getElementById('myProfileName');
+    const elTag = document.getElementById('myProfileTag');
+    const elFloor = document.getElementById('myProfileFloor');
+    const elScore = document.getElementById('myProfileScore');
+    const elAvatar = document.getElementById('myProfileAvatar');
+    if (elName) elName.textContent = myProfile.nickname;
+    if (elTag) elTag.textContent = '#' + myProfile.tag;
+    if (elFloor) elFloor.textContent = myProfile.maxFloor;
+    if (elScore) elScore.textContent = myProfile.bestScore.toLocaleString('de-DE');
+    if (elAvatar) elAvatar.textContent = myProfile.avatar;
+  }
+
+  function renderFriendsLeaderboard() {
+    updateMyProfileUI();
+    const area = document.getElementById('friendsListArea');
+    if (!area) return;
+    area.innerHTML = '';
+
+    // Combine user and friends for ranked view
+    const allClimbers = [
+      { name: myProfile.nickname + ' (Du)', tag: myProfile.tag, avatar: myProfile.avatar, maxFloor: myProfile.maxFloor, bestScore: myProfile.bestScore, isMe: true },
+      ...friendsList
+    ];
+
+    allClimbers.sort((a, b) => (b.bestScore || 0) - (a.bestScore || 0));
+
+    allClimbers.forEach((c, idx) => {
+      const rank = idx + 1;
+      const rankMedal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+      const card = document.createElement('div');
+      card.className = 'shop-item-card' + (c.isMe ? ' equipped' : '');
+      card.style.cssText = `
+        padding: 6px 10px;
+        background: ${c.isMe ? 'rgba(0,245,212,0.12)' : 'rgba(15,23,42,0.6)'};
+        border: 1px solid ${c.isMe ? '#00f5d4' : 'rgba(255,255,255,0.08)'};
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      `;
+      card.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-weight:900;font-size:12px;color:${rank === 1 ? '#ffd166' : '#94a3b8'};width:18px;">${rankMedal}</span>
+          <span style="font-size:16px;">${c.avatar}</span>
+          <div>
+            <div style="font-weight:900;font-size:11px;color:${c.isMe ? '#00f5d4' : '#fff'};">${c.name}</div>
+            <div style="font-size:8px;color:#94a3b8;font-family:ui-monospace,monospace;">#${c.tag}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div style="text-align:right;">
+            <div style="font-size:10px;font-weight:900;color:#ffd166;">${(c.bestScore || 0).toLocaleString('de-DE')} PTS</div>
+            <div style="font-size:8px;color:#94a3b8;">ETAGE ${c.maxFloor || 0}</div>
+          </div>
+          ${!c.isMe ? `
+            <button type="button" class="primary-btn" style="padding:4px 8px;font-size:9px;background:linear-gradient(135deg,#f72585,#ffbe0b);color:#020617;font-weight:900;" onclick="window.challengeFriend('${c.tag}', '${c.name}', ${c.maxFloor || 50}, ${c.bestScore || 20000})" title="1v1 Duell senden">
+              ⚔️
+            </button>
+            <button type="button" style="background:none;border:none;color:#64748b;font-size:12px;cursor:pointer;padding:2px 4px;" onclick="window.removeFriend('${c.tag}')" title="Freund entfernen">
+              ✕
+            </button>
+          ` : ''}
+        </div>
+      `;
+      area.appendChild(card);
+    });
+  }
+
+  function openFriendsModal() {
+    renderFriendsLeaderboard();
+    document.getElementById('friendsModalBackdrop').classList.remove('hidden');
+  }
+  function closeFriendsModal() {
+    document.getElementById('friendsModalBackdrop').classList.add('hidden');
+  }
+
+  document.getElementById('btnTopFriends').onclick = openFriendsModal;
+  const btnMenuFriends = document.getElementById('btnMenuFriends');
+  if (btnMenuFriends) btnMenuFriends.onclick = openFriendsModal;
+  document.getElementById('btnCloseFriends').onclick = closeFriendsModal;
+
+  // Edit Nickname
+  document.getElementById('btnEditNickname').onclick = () => {
+    const newName = prompt('Dein gewünschter Spieler-Name:', myProfile.nickname);
+    if (newName && newName.trim().length > 0) {
+      myProfile.nickname = newName.trim().slice(0, 15);
+      saveFriendsData();
+      renderFriendsLeaderboard();
+      triggerCoinToast(`✓ Name geändert in: ${myProfile.nickname}`);
+    }
+  };
+
+  // Copy Tag
+  document.getElementById('btnCopyTag').onclick = () => {
+    triggerHaptic(20);
+    const tagStr = '#' + myProfile.tag;
+    try {
+      navigator.clipboard.writeText(tagStr);
+      triggerCoinToast(`✓ DEIN TAG KOPIERT: ${tagStr}`);
+    } catch (e) {
+      prompt('Dein Tag zum Kopieren:', tagStr);
+    }
+  };
+
+  // Share Friend Invite Link
+  document.getElementById('btnShareInviteLink').onclick = () => {
+    triggerHaptic(25);
+    const inviteUrl = `${getPlayableUrl()}?addFriend=${encodeURIComponent(myProfile.tag)}&name=${encodeURIComponent(myProfile.nickname)}&floor=${myProfile.maxFloor}&score=${myProfile.bestScore}`;
+    const textMsg = `👥 Hey! Füge mich in Velocity Tower als Freund hinzu:\n👉 ${inviteUrl}\nLass uns sehen, wer höher klettert! 🚀`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Velocity Tower Freundschaftsanfrage',
+        text: textMsg,
+        url: inviteUrl
+      }).catch(() => {});
+    } else {
+      try {
+        navigator.clipboard.writeText(textMsg);
+        triggerCoinToast('✓ FREUNDES-LINK IN ZWISCHENABLAGE KOPIERT!');
+      } catch (e) {
+        prompt('Dein Einladungslink:', inviteUrl);
+      }
+    }
+  };
+
+  // Add Friend manually by Tag or Code
+  document.getElementById('btnAddFriend').onclick = () => {
+    const input = document.getElementById('inputFriendTag');
+    const val = input.value.trim().replace(/^#/, '');
+    if (!val) return;
+
+    if (val.toUpperCase() === myProfile.tag.toUpperCase()) {
+      alert('Das ist dein eigener Tag!');
+      return;
+    }
+
+    if (friendsList.some(f => f.tag.toUpperCase() === val.toUpperCase())) {
+      alert('Dieser Freund ist bereits in deiner Liste!');
+      return;
+    }
+
+    const cleanName = val.split('-')[0] || 'Climber';
+    const newFriend = {
+      name: cleanName.charAt(0).toUpperCase() + cleanName.slice(1).toLowerCase(),
+      tag: val.toUpperCase(),
+      avatar: '🧗',
+      maxFloor: Math.floor(40 + Math.random() * 80),
+      bestScore: Math.floor(20000 + Math.random() * 50000),
+      status: 'Online'
+    };
+
+    friendsList.push(newFriend);
+    saveFriendsData();
+    renderFriendsLeaderboard();
+    input.value = '';
+    triggerHaptic(40);
+    triggerCoinToast(`🎉 ${newFriend.name} (#${newFriend.tag}) HINZUGEFÜGT!`);
+  };
+
+  // Challenge a Friend 1v1
+  window.challengeFriend = function(tag, name, floor, score) {
+    triggerHaptic(30);
+    const playUrl = `${getPlayableUrl()}?rivalFloor=${floor}&rivalScore=${score}&challenger=${encodeURIComponent(myProfile.nickname)}`;
+    const textMsg = `⚔️ 1v1 DUELL! Ich fordere dich in Velocity Tower heraus:\nKannst du den Rekord von ${name} schlagen?\n👉 ${playUrl}`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: `⚔️ 1v1 Duell gegen ${name}`,
+        text: textMsg,
+        url: playUrl
+      }).catch(() => {});
+    } else {
+      try {
+        navigator.clipboard.writeText(textMsg);
+        triggerCoinToast(`✓ DUELL-LINK FÜR ${name} KOPIERT!`);
+      } catch (e) {
+        prompt('Duell-Link:', playUrl);
+      }
+    }
+  };
+
+  // Remove Friend
+  window.removeFriend = function(tag) {
+    if (confirm(`Freund #${tag} wirklich entfernen?`)) {
+      friendsList = friendsList.filter(f => f.tag !== tag);
+      saveFriendsData();
+      renderFriendsLeaderboard();
+      triggerCoinToast('Freund entfernt.');
+    }
+  };
+
+  // Auto-detect incoming Friend Invite from URL: ?addFriend=TAG&name=NAME&floor=X&score=Y
+  try {
+    const p = new URLSearchParams(window.location.search);
+    const fTag = p.get('addFriend');
+    const fName = p.get('name');
+    const fFloor = parseInt(p.get('floor'), 10) || 50;
+    const fScore = parseInt(p.get('score'), 10) || 25000;
+
+    if (fTag && fTag.toUpperCase() !== myProfile.tag.toUpperCase()) {
+      if (!friendsList.some(f => f.tag.toUpperCase() === fTag.toUpperCase())) {
+        const addedFriend = {
+          name: fName ? decodeURIComponent(fName) : 'Freund',
+          tag: fTag.toUpperCase(),
+          avatar: '🎮',
+          maxFloor: fFloor,
+          bestScore: fScore,
+          status: 'Online'
+        };
+        friendsList.push(addedFriend);
+        saveFriendsData();
+        setTimeout(() => {
+          triggerCoinToast(`🎉 NEUER FREUND HINZUGEFÜGT: ${addedFriend.name} (#${addedFriend.tag})!`);
+          triggerHaptic(50);
+          spawnConfetti(W / 2, H * 0.35, 40);
+        }, 1200);
+      }
+    }
+  } catch (e) {}
 
   // 1. FORTUNE WHEEL ENGINE
   const WHEEL_SECTORS = [
