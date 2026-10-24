@@ -1743,15 +1743,19 @@
             Cyberpunk Arcade Vertical Platformer
           </p>
 
-          <!-- Character Showcase Box -->
-          <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin:2px 0 6px; background:rgba(0,0,0,0.3); border-radius:12px; padding:6px 12px; border:1px solid rgba(0,245,212,0.2); width:100%;">
-            <div id="homeCharPortraitBox" style="width:38px; height:38px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,rgba(0,245,212,0.2),rgba(59,130,246,0.2)); border-radius:50%; border:1px solid #00f5d4; font-size:20px;">
-              👟
+          <!-- Character Showcase Box with Live Climber Avatar & Quick Cycle -->
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin:4px 0 8px; background:linear-gradient(135deg,rgba(0,245,212,0.1),rgba(59,130,246,0.1)); border-radius:14px; padding:8px 12px; border:1px solid rgba(0,245,212,0.3); width:100%;">
+            <button type="button" id="btnPrevCharHome" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#00f5d4; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer;" title="Vorheriger Climber">◀</button>
+            <div style="display:flex; align-items:center; gap:10px; cursor:pointer;" id="homeCharCenterPill" title="Klicke um Climber zu wechseln">
+              <div id="homeCharPortraitBox" style="width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:#0d1b2a; border-radius:50%; border:2px solid #00f5d4; box-shadow:0 0 14px rgba(0,245,212,0.4); overflow:hidden;">
+              </div>
+              <div style="text-align:left;">
+                <div id="homeCharNameTxt" style="font-weight:900; font-size:12px; color:#f8fafc; letter-spacing:0.5px;">KID FLEX</div>
+                <div id="homeCharStyleTxt" style="font-size:8px; color:#00f5d4; font-weight:700;">Streetwear // 120 BPM</div>
+                <div id="homeHighscoreBanner" style="font-size:8px; color:#ffd166; font-weight:800; margin-top:1px;">🏆 REKORD: ETAGE <span id="homeBestFloorTxt">0</span> // <span id="menuBest">0</span> PTS</div>
+              </div>
             </div>
-            <div style="text-align:left;">
-              <div id="homeCharNameTxt" style="font-weight:900; font-size:11.5px; color:#f8fafc;">VICE RUNNER</div>
-              <div id="homeHighscoreBanner" style="font-size:8.5px; color:#ffd166; font-weight:800;">🏆 BESTE ETAGE: <span id="homeBestFloorTxt">0</span> // <span id="menuBest">0</span> PTS</div>
-            </div>
+            <button type="button" id="btnNextCharHome" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#00f5d4; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer;" title="Nächster Climber">▶</button>
           </div>
 
           <!-- PRIMARY GIANT PLAY BUTTON -->
@@ -3056,6 +3060,28 @@
   // ============================================================================
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
+
+  // Bulletproof roundRect polyfill for all Android WebViews & Browsers
+  if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D.prototype.roundRect) {
+    CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+      if (!r) r = 0;
+      let rad = typeof r === 'number' ? r : 3;
+      rad = Math.min(rad, Math.abs(w) / 2, Math.abs(h) / 2);
+      this.beginPath();
+      this.moveTo(x + rad, y);
+      this.lineTo(x + w - rad, y);
+      this.quadraticCurveTo(x + w, y, x + w, y + rad);
+      this.lineTo(x + w, y + h - rad);
+      this.quadraticCurveTo(x + w, y + h, x + w - rad, y + h);
+      this.lineTo(x + rad, y + h);
+      this.quadraticCurveTo(x, y + h, x, y + h - rad);
+      this.lineTo(x, y + rad);
+      this.quadraticCurveTo(x, y, x + rad, y);
+      this.closePath();
+      return this;
+    };
+  }
+
   const stageArea = document.getElementById('stageArea');
   let W = 400, H = 560, WALL = 28;
 
@@ -4478,95 +4504,125 @@
   // 6. AAA SKELETAL CHARACTER & 3D ICE RENDERER
   // ============================================================================
   function drawCharacterBody(px, py, angle, scaleX, scaleY, alpha = 1) {
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.translate(px, py);
-    ctx.rotate(angle);
-    ctx.scale(scaleX, scaleY);
+    try {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.translate(px, py);
+      ctx.rotate(angle);
+      ctx.scale(scaleX, scaleY);
 
-    const f = player.facing;
-    const swing = player.onGround ? Math.sin(player.runPhase) * 9 : (player.vy < 0 ? -6 : 6);
-    const legSwing = player.onGround ? Math.sin(player.runPhase) * 10 : 5;
+      const charObj = (typeof selectedChar !== 'undefined' && selectedChar) ? selectedChar : CHARS[0];
+      const f = (player && typeof player.facing !== 'undefined') ? player.facing : 1;
+      const onG = (player && player.onGround);
+      const rPhase = (player && player.runPhase) ? player.runPhase : 0;
+      const pVy = (player && typeof player.vy !== 'undefined') ? player.vy : 0;
+      const swing = onG ? Math.sin(rPhase) * 9 : (pVy < 0 ? -6 : 6);
+      const legSwing = onG ? Math.sin(rPhase) * 10 : 5;
 
-    ctx.strokeStyle = selectedChar.hoodie;
-    ctx.lineWidth = 5;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.moveTo(0, -6);
-    ctx.lineTo(-f * 8 - swing * 0.5, 4);
-    ctx.stroke();
+      const drawR = (rx, ry, rw, rh, rad = 3) => {
+        if (ctx.roundRect) {
+          try {
+            ctx.beginPath();
+            ctx.roundRect(rx, ry, rw, rh, rad);
+            ctx.fill();
+            return;
+          } catch(e) {}
+        }
+        ctx.fillRect(rx, ry, rw, rh);
+      };
 
-    ctx.fillStyle = selectedChar.pants;
-    ctx.beginPath();
-    ctx.roundRect(-9 + legSwing * 0.4, 5, 8, 13, 3);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.roundRect(1 - legSwing * 0.4, 5, 8, 13, 3);
-    ctx.fill();
-
-    ctx.fillStyle = selectedChar.shoes;
-    ctx.beginPath();
-    ctx.roundRect(-11 + legSwing * 0.5, 16, 11, 6, 3);
-    ctx.roundRect(0 - legSwing * 0.5, 16, 11, 6, 3);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(-11 + legSwing * 0.5, 20, 11, 2);
-    ctx.fillRect(0 - legSwing * 0.5, 20, 11, 2);
-
-    ctx.fillStyle = selectedChar.hoodie;
-    ctx.beginPath();
-    ctx.roundRect(-10, -10, 20, 17, 6);
-    ctx.fill();
-
-    ctx.fillStyle = 'rgba(2, 6, 23, 0.45)';
-    ctx.fillRect(-9, -2, 18, 4);
-
-    if (selectedChar.headgear === 'katana') {
-      ctx.strokeStyle = '#e2e8f0';
-      ctx.lineWidth = 3;
+      // Back arm
+      ctx.strokeStyle = charObj.hoodie;
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
       ctx.beginPath();
-      ctx.moveTo(-f * 6, -4);
-      ctx.lineTo(-f * 16, -24);
+      ctx.moveTo(0, -6);
+      ctx.lineTo(-f * 8 - swing * 0.5, 4);
       ctx.stroke();
-    }
 
-    ctx.fillStyle = '#fde68a';
-    ctx.beginPath();
-    ctx.arc(0, -16, 8.5, 0, Math.PI * 2);
-    ctx.fill();
+      // Pants
+      ctx.fillStyle = charObj.pants;
+      drawR(-9 + legSwing * 0.4, 5, 8, 13, 3);
+      drawR(1 - legSwing * 0.4, 5, 8, 13, 3);
 
-    if (selectedChar.headgear === 'beanie') {
-      ctx.fillStyle = selectedChar.scarf;
-      ctx.beginPath();
-      ctx.arc(0, -18, 9, Math.PI, 0);
-      ctx.fill();
+      // Shoes
+      ctx.fillStyle = charObj.shoes;
+      drawR(-11 + legSwing * 0.5, 16, 11, 6, 3);
+      drawR(0 - legSwing * 0.5, 16, 11, 6, 3);
       ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-11 + legSwing * 0.5, 20, 11, 2);
+      ctx.fillRect(0 - legSwing * 0.5, 20, 11, 2);
+
+      // Hoodie Body
+      ctx.fillStyle = charObj.hoodie;
+      drawR(-10, -10, 20, 17, 6);
+
+      // Belt
+      ctx.fillStyle = 'rgba(2, 6, 23, 0.45)';
+      ctx.fillRect(-9, -2, 18, 4);
+
+      if (charObj.headgear === 'katana') {
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(-f * 6, -4);
+        ctx.lineTo(-f * 16, -24);
+        ctx.stroke();
+      }
+
+      // Head
+      ctx.fillStyle = '#fde68a';
       ctx.beginPath();
-      ctx.arc(0, -27, 3, 0, Math.PI * 2);
+      ctx.arc(0, -16, 8.5, 0, Math.PI * 2);
       ctx.fill();
-    } else if (selectedChar.headgear === 'afro') {
-      ctx.fillStyle = '#1e1b4b';
+
+      // Headgear
+      if (charObj.headgear === 'beanie') {
+        ctx.fillStyle = charObj.scarf;
+        ctx.beginPath();
+        ctx.arc(0, -18, 9, Math.PI, 0);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, -27, 3, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (charObj.headgear === 'afro') {
+        ctx.fillStyle = '#1e1b4b';
+        ctx.beginPath();
+        ctx.arc(0, -19, 12.5, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (charObj.headgear === 'goggles') {
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(-9, -24, 18, 5);
+      }
+
+      // Visor / Eyes
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(f > 0 ? -3 : -9, -19, 12, 5);
+      ctx.fillStyle = charObj.visor;
+      ctx.fillRect(f > 0 ? -1 : -8, -18, 9, 3);
+
+      // Front arm
+      ctx.strokeStyle = charObj.hoodie;
+      ctx.lineWidth = 5;
       ctx.beginPath();
-      ctx.arc(0, -19, 12.5, 0, Math.PI * 2);
-      ctx.fill();
-    } else if (selectedChar.headgear === 'goggles') {
-      ctx.fillStyle = '#ef4444';
-      ctx.fillRect(-9, -24, 18, 5);
+      ctx.moveTo(0, -6);
+      ctx.lineTo(f * 8 + swing * 0.6, 4);
+      ctx.stroke();
+
+      ctx.restore();
+    } catch(err) {
+      try {
+        ctx.restore();
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.fillStyle = '#00f5d4';
+        ctx.beginPath();
+        ctx.arc(0, 0, 15, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      } catch(e2) {}
     }
-
-    ctx.fillStyle = '#020617';
-    ctx.fillRect(f > 0 ? -3 : -9, -19, 12, 5);
-    ctx.fillStyle = selectedChar.visor;
-    ctx.fillRect(f > 0 ? -1 : -8, -18, 9, 3);
-
-    ctx.strokeStyle = selectedChar.hoodie;
-    ctx.lineWidth = 5;
-    ctx.beginPath();
-    ctx.moveTo(0, -6);
-    ctx.lineTo(f * 8 + swing * 0.6, 4);
-    ctx.stroke();
-
-    ctx.restore();
   }
 
   function draw() {
@@ -6490,7 +6546,16 @@ Kannst du mich schlagen? Tritt direkt im Browser gegen mich an:
     if (homeAvatar && myProfile) homeAvatar.textContent = myProfile.avatar || '🎮';
     if (homeNick && myProfile) homeNick.textContent = myProfile.nickname || 'Climber';
     if (homeFloor && myProfile) homeFloor.textContent = myProfile.bestFloor || 0;
-    if (homeCharName && typeof selectedChar !== 'undefined') homeCharName.textContent = selectedChar.name.toUpperCase();
+    
+    // Update Home Climber Avatar & Style
+    const pBox = document.getElementById('homeCharPortraitBox');
+    const pName = document.getElementById('homeCharNameTxt');
+    const pStyle = document.getElementById('homeCharStyleTxt');
+    const curC = (typeof selectedChar !== 'undefined' && selectedChar) ? selectedChar : CHARS[0];
+    if (pBox && curC) pBox.innerHTML = curC.portraitSvg;
+    if (pName && curC) pName.textContent = curC.name.toUpperCase();
+    if (pStyle && curC) pStyle.textContent = curC.style;
+
   }
 
   // Account Linking Handler with Celebratory FX
