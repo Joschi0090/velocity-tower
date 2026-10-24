@@ -1,0 +1,7 @@
+*.apk
+*.aab
+*.backup.html
+VelocityTowerAndroid/
+velocity-tower-apex*.html
+.idea/
+*.log
