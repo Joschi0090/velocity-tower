@@ -3381,7 +3381,6 @@
     draw();
     requestAnimationFrame(loop);
   }
-  loop();
 
   // ============================================================================
 
@@ -4488,6 +4487,9 @@ Kannst du mich schlagen? Tritt direkt im Browser gegen mich an:
     }
   };
 
+
+  // Start game loop after full initialization
+  loop();
 })();
 </script>
 </body>
