@@ -1117,7 +1117,150 @@
       100% { opacity: 0; transform: translate(-50%, -30px) scale(0.9); }
     }
 
-  </style>
+  
+    /* ==========================================================================
+       AAA STREAMLINED HOME SCREEN & SOCIAL ACCOUNT HUB STYLES
+       ========================================================================== */
+    .home-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    .home-profile-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(0, 245, 212, 0.35);
+      border-radius: 24px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .home-profile-pill:hover, .home-profile-pill:active {
+      transform: scale(1.02);
+      background: rgba(0, 245, 212, 0.15);
+    }
+    .home-hero-card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.85), rgba(2, 6, 23, 0.95));
+      border: 1px solid rgba(0, 245, 212, 0.25);
+      border-radius: 18px;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .home-play-btn {
+      background: linear-gradient(135deg, #00f5d4, #3b82f6) !important;
+      color: #020617 !important;
+      font-weight: 900 !important;
+      font-size: 15px !important;
+      letter-spacing: 1px !important;
+      padding: 13px 16px !important;
+      border-radius: 14px !important;
+      box-shadow: 0 0 24px rgba(0, 245, 212, 0.55) !important;
+      cursor: pointer !important;
+      width: 100% !important;
+      margin: 8px 0 !important;
+      transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    }
+    .home-play-btn:hover, .home-play-btn:active {
+      transform: scale(1.02);
+      box-shadow: 0 0 32px rgba(0, 245, 212, 0.8) !important;
+    }
+    .home-mode-chips {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 2px;
+    }
+    .mode-chip {
+      flex: 1;
+      padding: 5px 3px;
+      font-size: 9px;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      color: #94a3b8;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+    .mode-chip.active {
+      background: rgba(0, 245, 212, 0.22);
+      border-color: #00f5d4;
+      color: #00f5d4;
+      box-shadow: 0 0 12px rgba(0, 245, 212, 0.35);
+    }
+    .home-subnav-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px;
+      width: 100%;
+    }
+    .home-nav-card {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 11px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 10.5px;
+      color: #f8fafc;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .home-nav-card:hover, .home-nav-card:active {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+    .account-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+    .account-row-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+    .account-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 10px;
+      cursor: pointer;
+      border: none;
+      white-space: nowrap;
+      transition: transform 0.15s ease;
+    }
+    .account-btn:active {
+      transform: scale(0.96);
+    }
+    .account-btn.connected {
+      background: rgba(0, 245, 212, 0.2);
+      color: #00f5d4;
+      border: 1px solid #00f5d4;
+      cursor: default;
+    }
+
+</style>
 </head>
 <body>
 <div id="app">
@@ -1212,12 +1355,113 @@
          STREAMLINED MAIN MENU OVERLAY (CLEAN CARDS + POP-UP PREVIEW)
          ====================================================================== -->
     <div class="overlay" id="menuOverlay">
-      <div class="menu-shell">
-        <span class="top-pill-badge">ULTIMATE v5.0 // 4 TOUCH-STEUERUNGEN &amp; PRO-SCALING</span>
-        <h1 class="hero-title">VICE &amp; ICE APEX v5</h1>
-        <p class="hero-desc">
-          Je höher du steigst, desto schneller läufst du &amp; desto schmaler werden die Stufen!
-        </p>
+      <div class="menu-shell" style="max-height: 94vh; display: flex; flex-direction: column; justify-content: space-between; padding: 12px 14px;">
+        
+        <!-- TOP PROFILE & STATUS BAR -->
+        <div class="home-top-bar">
+          <div class="home-profile-pill" id="homeProfilePill" title="Account &amp; Social Cloud-Sync">
+            <span id="homeAvatarTxt" style="font-size:18px;">🎮</span>
+            <div style="display:flex; flex-direction:column; text-align:left;">
+              <span id="homeNicknameTxt" style="font-weight:900; font-size:11px; color:#fff; line-height:1.1;">Climber</span>
+              <span id="homeAccountBadge" style="font-size:7.5px; color:#00f5d4; font-weight:800;">🔗 ACCOUNT VERKNÜPFEN (+500💎)</span>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div id="homeCurrencyPill" style="display:flex; align-items:center; gap:5px; background:rgba(255,209,102,0.15); border:1px solid #ffd166; border-radius:20px; padding:4px 9px; font-weight:900; font-size:11px; color:#ffd166; cursor:pointer;" title="Shop &amp; Deals öffnen">
+              <span>💎</span>
+              <span id="homeGemsDisplay">0</span>
+            </div>
+            <button type="button" id="btnHomeSoundToggle" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; font-size:13px; cursor:pointer; color:#fff;" title="Ton umschalten">
+              🔊
+            </button>
+          </div>
+        </div>
+
+        <!-- HERO BRANDING & CHARACTER SHOWCASE -->
+        <div class="home-hero-card">
+          <span class="top-pill-badge" style="margin-bottom:3px; font-size:7.5px;">APEX CLIMBER // AAA SOCIAL EDITION</span>
+          <h1 class="hero-title" style="font-size:22px; margin:1px 0 3px; letter-spacing:1px; line-height:1.1;">VELOCITY TOWER</h1>
+          <p class="hero-desc" style="font-size:9px; color:#94a3b8; margin-bottom:6px;">
+            Cyberpunk Arcade Vertical Platformer
+          </p>
+
+          <!-- Character Showcase Box -->
+          <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin:2px 0 6px; background:rgba(0,0,0,0.3); border-radius:12px; padding:6px 12px; border:1px solid rgba(0,245,212,0.2); width:100%;">
+            <div id="homeCharPortraitBox" style="width:38px; height:38px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,rgba(0,245,212,0.2),rgba(59,130,246,0.2)); border-radius:50%; border:1px solid #00f5d4; font-size:20px;">
+              👟
+            </div>
+            <div style="text-align:left;">
+              <div id="homeCharNameTxt" style="font-weight:900; font-size:11.5px; color:#f8fafc;">VICE RUNNER</div>
+              <div id="homeHighscoreBanner" style="font-size:8.5px; color:#ffd166; font-weight:800;">🏆 BESTE ETAGE: <span id="homeBestFloorTxt">0</span> // <span id="menuBest">0</span> PTS</div>
+            </div>
+          </div>
+
+          <!-- PRIMARY GIANT PLAY BUTTON -->
+          <button type="button" class="primary-btn home-play-btn" id="btnStart">
+            ▶ SPIELEN (TAP TO CLIMB)
+          </button>
+
+          <!-- QUICK GAME MODE CHIPS -->
+          <div class="home-mode-chips" id="homeModeChips">
+            <div class="mode-chip active" data-gamemode="CLASSIC">⚡ CLASSIC</div>
+            <div class="mode-chip" data-gamemode="HARDCORE">🔥 OVERDRIVE 2x</div>
+            <div class="mode-chip" data-gamemode="RIVAL">⚔️ 1v1 DUELL</div>
+          </div>
+        </div>
+
+        <!-- 4 CLEAN CATEGORY ACTION HUBS (SUBMENU ENTRIES) -->
+        <div class="home-subnav-grid">
+          <button type="button" class="home-nav-card" id="btnOpenRewardsHub" style="border-color:rgba(255,209,102,0.4); background:linear-gradient(135deg,rgba(255,209,102,0.12),rgba(247,37,133,0.12));">
+            <span style="font-size:19px;">🎁</span>
+            <div style="text-align:left;">
+              <div style="color:#ffd166; font-size:10.5px; font-weight:900;">BELOHNUNGEN</div>
+              <div style="color:#94a3b8; font-size:7.5px;">Spin, Streak &amp; Quests</div>
+            </div>
+          </button>
+
+          <button type="button" class="home-nav-card" id="btnMenuShop" style="border-color:rgba(244,114,182,0.4); background:linear-gradient(135deg,rgba(244,114,182,0.12),rgba(147,51,234,0.12));">
+            <span style="font-size:19px;">🛍️</span>
+            <div style="text-align:left;">
+              <div style="color:#f472b6; font-size:10.5px; font-weight:900;">NEON SHOP</div>
+              <div style="color:#94a3b8; font-size:7.5px;">Skins, Trails &amp; Deals</div>
+            </div>
+          </button>
+
+          <button type="button" class="home-nav-card" id="btnMenuFriends" style="border-color:rgba(59,130,246,0.4); background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(0,245,212,0.12));">
+            <span style="font-size:19px;">👥</span>
+            <div style="text-align:left;">
+              <div style="color:#00f5d4; font-size:10.5px; font-weight:900;">FREUNDE &amp; 1v1</div>
+              <div style="color:#94a3b8; font-size:7.5px;">Rangliste &amp; Duelle</div>
+            </div>
+          </button>
+
+          <button type="button" class="home-nav-card" id="btnOpenSettingsHub" style="border-color:rgba(148,163,184,0.3); background:rgba(255,255,255,0.05);">
+            <span style="font-size:19px;">⚙️</span>
+            <div style="text-align:left;">
+              <div style="color:#f8fafc; font-size:10.5px; font-weight:900;">STEUERUNG</div>
+              <div style="color:#94a3b8; font-size:7.5px;">Touch, Tempo &amp; Sound</div>
+            </div>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         SETTINGS & CONTROLS SUBMENU MODAL
+         ====================================================================== -->
+    <div class="preview-modal-backdrop hidden" id="settingsModalBackdrop" style="z-index: 96;">
+      <div class="preview-card" style="max-height:88vh; overflow-y:auto; width:92%; max-width:440px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">
+          <div>
+            <h2 style="font-size:15px; font-weight:900; color:#f8fafc; margin:0; display:flex; align-items:center; gap:6px;">
+              <span>⚙️</span> STEUERUNG &amp; KALIBRIERUNG
+            </h2>
+            <p style="font-size:8.5px; color:#94a3b8; margin:2px 0 0;">Passe die Steuerung und das Spieltempo an dein Handy an.</p>
+          </div>
+          <button type="button" class="secondary-btn" id="btnCloseSettings" style="width:30px; height:30px; padding:0; font-size:16px; border-radius:50%;">✕</button>
+        </div>
 
         <div class="section-lbl">
           <span>1. HANDY-STEUERUNG WÄHLEN</span>
@@ -1240,48 +1484,190 @@
         <div class="section-lbl">
           <span>4. START-ETAGE (BIOME CHECKPOINT)</span>
         </div>
-                <div class="opt-row" id="floorGrid"></div>
+        <div class="opt-row" id="floorGrid"></div>
 
-        <!-- QUICK ARCADE REWARDS BAR (LUCKY SPIN, STREAK, QUESTS, TROPHIES) -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:8px 0 10px;">
-          <button type="button" class="secondary-btn" id="btnOpenWheel" style="background:linear-gradient(135deg,rgba(255,190,11,0.18),rgba(247,37,133,0.18));border-color:#ffbe0b;color:#ffd166;font-weight:900;padding:6px 2px;font-size:8.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
-            <span style="font-size:15px;">🎡</span>
-            <span>SPIN</span>
-          </button>
-          <button type="button" class="secondary-btn" id="btnOpenStreak" style="background:linear-gradient(135deg,rgba(0,245,212,0.18),rgba(59,130,246,0.18));border-color:#00f5d4;color:#00f5d4;font-weight:900;padding:6px 2px;font-size:8.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
-            <span style="font-size:15px;">📅</span>
-            <span>STREAK</span>
-          </button>
-          <button type="button" class="secondary-btn" id="btnOpenQuests" style="background:linear-gradient(135deg,rgba(244,114,182,0.18),rgba(147,51,234,0.18));border-color:#f472b6;color:#f472b6;font-weight:900;padding:6px 2px;font-size:8.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
-            <span style="font-size:15px;">🎯</span>
-            <span id="menuQuestBadgeTxt">QUESTS</span>
-          </button>
-          <button type="button" class="secondary-btn" id="btnOpenTrophies" style="background:linear-gradient(135deg,rgba(255,209,102,0.18),rgba(59,130,246,0.18));border-color:#ffd166;color:#ffd166;font-weight:900;padding:6px 2px;font-size:8.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
-            <span style="font-size:15px;">🏆</span>
-            <span>TROPHIES</span>
-          </button>
-        </div>
-
-        
-        <button type="button" class="secondary-btn" id="btnMenuFriends" style="background:linear-gradient(135deg,rgba(244,114,182,0.22),rgba(59,130,246,0.22));border-color:#f472b6;color:#fff;font-weight:900;margin-bottom:8px;box-shadow:0 0 14px rgba(244,114,182,0.3);display:flex;align-items:center;justify-content:center;gap:8px;">
-          <span style="font-size:16px;">👥</span>
-          <span>FREUNDE &amp; RIVALEN (LIVE-RANGLISTE)</span>
-        </button>
-        <button type="button" class="primary-btn" id="btnMenuShop" style="background: linear-gradient(135deg, #ffd166, #f72585); color:#020617; font-weight:900; margin-bottom:10px; box-shadow:0 0 16px rgba(255,209,102,0.45);">
-          🛍️ NEON SHOP // SKINS, TRAILS &amp; DEALS
-        </button>
-        <button type="button" class="primary-btn" id="btnStart">▶ START CLIMBING</button>
-
-        <div class="menu-footer-row">
-          <div class="highscore-lbl">
-            HIGHSCORE: <span id="menuBest" style="color:#ffbe0b;font-weight:900;">0</span> PTS
-          </div>
+        <div style="margin-top:14px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
           <button type="button" class="dl-mini-btn" id="btnDownloadHtml">⬇ SAVE .HTML</button>
+          <button type="button" class="primary-btn" id="btnConfirmSettings" style="padding:8px 18px; font-size:11px;">✓ FERTIG</button>
         </div>
       </div>
     </div>
 
-    <!-- GAME OVER OVERLAY -->
+    <!-- ======================================================================
+         UNIFIED REWARDS SUBMENU HUB MODAL
+         ====================================================================== -->
+    <div class="preview-modal-backdrop hidden" id="rewardsModalBackdrop" style="z-index: 96;">
+      <div class="preview-card" style="max-height:88vh; overflow-y:auto; width:92%; max-width:440px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">
+          <div>
+            <h2 style="font-size:15px; font-weight:900; color:#ffd166; margin:0; display:flex; align-items:center; gap:6px;">
+              <span>🎁</span> BELOHNUNGEN &amp; ARCADE-HUB
+            </h2>
+            <p style="font-size:8.5px; color:#94a3b8; margin:2px 0 0;">Sammle täglich Boni, drehe am Glücksrad und löse Quests ein!</p>
+          </div>
+          <button type="button" class="secondary-btn" id="btnCloseRewardsHub" style="width:30px; height:30px; padding:0; font-size:16px; border-radius:50%;">✕</button>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+          <button type="button" class="secondary-btn" id="btnOpenWheel" style="background:linear-gradient(135deg,rgba(255,190,11,0.18),rgba(247,37,133,0.18)); border-color:#ffbe0b; color:#ffd166; font-weight:900; padding:14px 10px; font-size:11px; display:flex; flex-direction:column; align-items:center; gap:6px; border-radius:14px;">
+            <span style="font-size:26px;">🎡</span>
+            <span>NEON GLÜCKSRAD</span>
+            <span style="font-size:7.5px; color:#cbd5e1; font-weight:500;">Täglich Gratis-Spins</span>
+          </button>
+
+          <button type="button" class="secondary-btn" id="btnOpenStreak" style="background:linear-gradient(135deg,rgba(0,245,212,0.18),rgba(59,130,246,0.18)); border-color:#00f5d4; color:#00f5d4; font-weight:900; padding:14px 10px; font-size:11px; display:flex; flex-direction:column; align-items:center; gap:6px; border-radius:14px;">
+            <span style="font-size:26px;">📅</span>
+            <span>7-TAGE STREAK</span>
+            <span style="font-size:7.5px; color:#cbd5e1; font-weight:500;">Login-Prämien</span>
+          </button>
+
+          <button type="button" class="secondary-btn" id="btnOpenQuests" style="background:linear-gradient(135deg,rgba(244,114,182,0.18),rgba(147,51,234,0.18)); border-color:#f472b6; color:#f472b6; font-weight:900; padding:14px 10px; font-size:11px; display:flex; flex-direction:column; align-items:center; gap:6px; border-radius:14px;">
+            <span style="font-size:26px;">🎯</span>
+            <span id="menuQuestBadgeTxt">TÄGLICHE QUESTS</span>
+            <span style="font-size:7.5px; color:#cbd5e1; font-weight:500;">Kristalle &amp; Shards</span>
+          </button>
+
+          <button type="button" class="secondary-btn" id="btnOpenTrophies" style="background:linear-gradient(135deg,rgba(255,209,102,0.18),rgba(59,130,246,0.18)); border-color:#ffd166; color:#ffd166; font-weight:900; padding:14px 10px; font-size:11px; display:flex; flex-direction:column; align-items:center; gap:6px; border-radius:14px;">
+            <span style="font-size:26px;">🏆</span>
+            <span>TROPHÄEN (12)</span>
+            <span style="font-size:7.5px; color:#cbd5e1; font-weight:500;">Vitrine &amp; Titel</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         ACCOUNT & SOCIAL CLOUD-SYNC MODAL (GOOGLE PLAY, FB, IG, REWARD)
+         ====================================================================== -->
+    <div class="preview-modal-backdrop hidden" id="accountModalBackdrop" style="z-index: 98;">
+      <div class="preview-card" style="max-height:88vh; overflow-y:auto; width:92%; max-width:440px; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">
+          <div>
+            <h2 style="font-size:15px; font-weight:900; color:#00f5d4; margin:0; display:flex; align-items:center; gap:6px;">
+              <span>🌐</span> ACCOUNT &amp; CLOUD-SYNC
+            </h2>
+            <p style="font-size:8.5px; color:#94a3b8; margin:2px 0 0;">Sichere deinen Spielstand &amp; erhalte +500💎 je Verknüpfung!</p>
+          </div>
+          <button type="button" class="secondary-btn" id="btnCloseAccount" style="width:30px; height:30px; padding:0; font-size:16px; border-radius:50%;">✕</button>
+        </div>
+
+        <!-- Bonus banner -->
+        <div style="background:linear-gradient(135deg,rgba(255,209,102,0.15),rgba(0,245,212,0.15)); border:1px solid rgba(255,209,102,0.4); border-radius:12px; padding:8px 12px; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+          <span style="font-size:22px;">💎</span>
+          <div style="font-size:9.5px; text-align:left; color:#f8fafc;">
+            <strong>Link-Bonus:</strong> Verknüpfe deine Accounts, um deinen Spielstand nie zu verlieren und sofort bis zu <strong>+2.000 Neon-Kristalle</strong> abzustauben!
+          </div>
+        </div>
+
+        <!-- Provider Rows -->
+        <!-- 1. Google Play Games -->
+        <div class="account-row" id="rowGooglePlay">
+          <div class="account-row-info">
+            <div style="width:34px; height:34px; border-radius:50%; background:#0f9d58; display:flex; align-items:center; justify-content:center; font-size:18px;">🎮</div>
+            <div>
+              <div style="font-weight:900; font-size:11px; color:#fff;">Google Play Games</div>
+              <div style="font-size:8px; color:#94a3b8;" id="statusGooglePlayTxt">Cloud-Save, Erfolge &amp; Rangliste</div>
+            </div>
+          </div>
+          <button type="button" class="account-btn" id="btnLinkGooglePlay" style="background:#0f9d58; color:#fff;">
+            +500💎 VERKNÜPFEN
+          </button>
+        </div>
+
+        <!-- 2. Facebook Gaming -->
+        <div class="account-row" id="rowFacebook">
+          <div class="account-row-info">
+            <div style="width:34px; height:34px; border-radius:50%; background:#1877f2; display:flex; align-items:center; justify-content:center; font-size:18px;">🔵</div>
+            <div>
+              <div style="font-weight:900; font-size:11px; color:#fff;">Facebook Gaming</div>
+              <div style="font-size:8px; color:#94a3b8;" id="statusFacebookTxt">Finde Freunde aus deinem Netzwerk</div>
+            </div>
+          </div>
+          <button type="button" class="account-btn" id="btnLinkFacebook" style="background:#1877f2; color:#fff;">
+            +500💎 VERKNÜPFEN
+          </button>
+        </div>
+
+        <!-- 3. Instagram Community -->
+        <div class="account-row" id="rowInstagram">
+          <div class="account-row-info">
+            <div style="width:34px; height:34px; border-radius:50%; background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); display:flex; align-items:center; justify-content:center; font-size:18px;">📸</div>
+            <div>
+              <div style="font-weight:900; font-size:11px; color:#fff;">Instagram Community</div>
+              <div style="font-size:8px; color:#94a3b8;" id="statusInstagramTxt">Folge @velocitytower für Drops</div>
+            </div>
+          </div>
+          <button type="button" class="account-btn" id="btnLinkInstagram" style="background:linear-gradient(45deg,#f09433,#dc2743,#bc1888); color:#fff;">
+            +500💎 VERBINDEN
+          </button>
+        </div>
+
+        <!-- 4. Apple / E-Mail Cloud Backup -->
+        <div class="account-row" id="rowEmail">
+          <div class="account-row-info">
+            <div style="width:34px; height:34px; border-radius:50%; background:#334155; display:flex; align-items:center; justify-content:center; font-size:18px;">✉️</div>
+            <div>
+              <div style="font-weight:900; font-size:11px; color:#fff;">E-Mail &amp; Cloud-ID</div>
+              <div style="font-size:8px; color:#94a3b8;" id="statusEmailTxt">Geräteübergreifende Wiederherstellung</div>
+            </div>
+          </div>
+          <button type="button" class="account-btn" id="btnLinkEmail" style="background:#475569; color:#fff;">
+            +500💎 SICHERN
+          </button>
+        </div>
+
+        <!-- VIRAL REFERRAL PROGRAM (MARKETING BOOST) -->
+        <div style="background:linear-gradient(135deg,rgba(147,51,234,0.18),rgba(244,114,182,0.18)); border:1px solid rgba(244,114,182,0.35); border-radius:14px; padding:12px; margin-top:12px; text-align:left;">
+          <div style="display:flex; align-items:center; gap:6px; font-weight:900; font-size:11px; color:#f472b6;">
+            <span>🚀</span> VIRALES EMPFEHLUNGSPROGRAMM
+          </div>
+          <p style="font-size:8.5px; color:#cbd5e1; margin:4px 0 8px;">
+            Lade 3 Freunde über WhatsApp oder Social Media ein. Sobald sie deinen Link öffnen, erhältst du den exklusiven <strong>🐉 CYBER DRAGON SKIN</strong>!
+          </p>
+
+          <div style="display:flex; justify-content:space-between; font-size:8px; color:#ffbe0b; font-weight:900; margin-bottom:4px;">
+            <span>FORTSCHRITT:</span>
+            <span id="referralProgressTxt">1 / 3 FREUNDE EINGELADEN</span>
+          </div>
+          <div style="background:rgba(0,0,0,0.4); border-radius:6px; height:6px; width:100%; overflow:hidden; margin-bottom:10px;">
+            <div style="background:linear-gradient(90deg,#00f5d4,#f472b6); width:33%; height:100%;"></div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+            <button type="button" class="primary-btn" id="btnShareWhatsApp" style="background:#25d366; color:#020617; font-size:9.5px; padding:8px 6px;">
+              💬 WHATSAPP EINLADEN
+            </button>
+            <button type="button" class="secondary-btn" id="btnCopyReferral" style="font-size:9.5px; padding:8px 6px;">
+              📋 LINK KOPIEREN
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         5-STAR PLAY STORE RATING PROMPT MODAL
+         ====================================================================== -->
+    <div class="preview-modal-backdrop hidden" id="rateModalBackdrop" style="z-index: 101;">
+      <div class="preview-card" style="width:90%; max-width:360px; text-align:center; padding:18px;">
+        <span style="font-size:36px; display:block; margin-bottom:6px;">⭐</span>
+        <h3 style="font-size:15px; font-weight:900; color:#ffd166; margin:0 0 6px;">BIST DU IM FLOW?</h3>
+        <p style="font-size:9.5px; color:#cbd5e1; margin-bottom:12px;">
+          Gefällt dir Velocity Tower? Unterstütze uns mit <strong>5 Sternen</strong> im Google Play Store &amp; schalte gratis <strong>+300 Kristalle</strong> frei!
+        </p>
+        <div style="display:flex; justify-content:center; gap:6px; font-size:24px; color:#ffbe0b; margin-bottom:14px;">
+          <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+        </div>
+        <button type="button" class="primary-btn" id="btnRateConfirm" style="background:linear-gradient(135deg,#ffbe0b,#f72585); color:#020617; font-weight:900; margin-bottom:6px;">
+          ⭐ JETZT 5 STERNE BEWERTEN (+300💎)
+        </button>
+        <button type="button" class="secondary-btn" id="btnRateLater" style="font-size:9px; width:100%; padding:6px;">
+          Später erinnern
+        </button>
+      </div>
+    </div>
+
     <div class="overlay hidden" id="overOverlay">
       <div class="menu-shell">
         <span class="top-pill-badge" style="color:#f72585;border-color:#f72585;" id="overBadge">TOWER COLLAPSED</span>
@@ -4824,7 +5210,329 @@ Kannst du mich schlagen? Tritt direkt im Browser gegen mich an:
   };
 
 
-  // Start game loop after full initialization
+
+  // ==========================================================================
+  // SOCIAL SIGN-IN, ACCOUNT LINKING & VIRAL MARKETING ENGINE
+  // ==========================================================================
+  let linkedAccounts = {
+    googlePlay: false,
+    facebook: false,
+    instagram: false,
+    email: false
+  };
+
+  try {
+    const savedLinked = localStorage.getItem('vt_linked_accounts');
+    if (savedLinked) {
+      linkedAccounts = Object.assign(linkedAccounts, JSON.parse(savedLinked));
+    }
+  } catch (e) {}
+
+  function saveLinkedAccounts() {
+    try {
+      localStorage.setItem('vt_linked_accounts', JSON.stringify(linkedAccounts));
+    } catch (e) {}
+  }
+
+  // Update Account & Home UI
+  function updateAccountUI() {
+    // Google Play
+    const btnGp = document.getElementById('btnLinkGooglePlay');
+    const statusGp = document.getElementById('statusGooglePlayTxt');
+    if (btnGp && statusGp) {
+      if (linkedAccounts.googlePlay) {
+        btnGp.textContent = '✅ VERBUNDEN';
+        btnGp.className = 'account-btn connected';
+        statusGp.textContent = 'Verbunden mit Google Play Games';
+        statusGp.style.color = '#00f5d4';
+      } else {
+        btnGp.textContent = '+500💎 VERKNÜPFEN';
+        btnGp.className = 'account-btn';
+      }
+    }
+
+    // Facebook
+    const btnFb = document.getElementById('btnLinkFacebook');
+    const statusFb = document.getElementById('statusFacebookTxt');
+    if (btnFb && statusFb) {
+      if (linkedAccounts.facebook) {
+        btnFb.textContent = '✅ VERBUNDEN';
+        btnFb.className = 'account-btn connected';
+        statusFb.textContent = 'Verbunden mit Facebook Gaming';
+        statusFb.style.color = '#00f5d4';
+      } else {
+        btnFb.textContent = '+500💎 VERKNÜPFEN';
+        btnFb.className = 'account-btn';
+      }
+    }
+
+    // Instagram
+    const btnIg = document.getElementById('btnLinkInstagram');
+    const statusIg = document.getElementById('statusInstagramTxt');
+    if (btnIg && statusIg) {
+      if (linkedAccounts.instagram) {
+        btnIg.textContent = '✅ VERBUNDEN';
+        btnIg.className = 'account-btn connected';
+        statusIg.textContent = 'Folgt @velocitytower.game';
+        statusIg.style.color = '#00f5d4';
+      } else {
+        btnIg.textContent = '+500💎 VERBINDEN';
+        btnIg.className = 'account-btn';
+      }
+    }
+
+    // Email / Cloud-ID
+    const btnEm = document.getElementById('btnLinkEmail');
+    const statusEm = document.getElementById('statusEmailTxt');
+    if (btnEm && statusEm) {
+      if (linkedAccounts.email) {
+        btnEm.textContent = '✅ GESICHERT';
+        btnEm.className = 'account-btn connected';
+        statusEm.textContent = 'Cloud-Backup synchronisiert';
+        statusEm.style.color = '#00f5d4';
+      } else {
+        btnEm.textContent = '+500💎 SICHERN';
+        btnEm.className = 'account-btn';
+      }
+    }
+
+    // Home Profile Pill Badge
+    const homeBadge = document.getElementById('homeAccountBadge');
+    if (homeBadge) {
+      const anyLinked = Object.values(linkedAccounts).some(Boolean);
+      if (anyLinked) {
+        homeBadge.textContent = '🟢 CLOUD GESICHERT (SYNCHRON)';
+        homeBadge.style.color = '#00f5d4';
+      } else {
+        homeBadge.textContent = '🔗 ACCOUNT VERKNÜPFEN (+500💎)';
+        homeBadge.style.color = '#ffd166';
+      }
+    }
+
+    // Currency Pill
+    const homeGems = document.getElementById('homeGemsDisplay');
+    if (homeGems && typeof gems !== 'undefined') {
+      homeGems.textContent = gems;
+    }
+
+    // Home Profile info
+    const homeAvatar = document.getElementById('homeAvatarTxt');
+    const homeNick = document.getElementById('homeNicknameTxt');
+    const homeFloor = document.getElementById('homeBestFloorTxt');
+    const homeCharName = document.getElementById('homeCharNameTxt');
+    if (homeAvatar && myProfile) homeAvatar.textContent = myProfile.avatar || '🎮';
+    if (homeNick && myProfile) homeNick.textContent = myProfile.nickname || 'Climber';
+    if (homeFloor && myProfile) homeFloor.textContent = myProfile.bestFloor || 0;
+    if (homeCharName && typeof selectedChar !== 'undefined') homeCharName.textContent = selectedChar.name.toUpperCase();
+  }
+
+  // Account Linking Handler with Celebratory FX
+  function linkAccount(provider, name) {
+    if (linkedAccounts[provider]) {
+      showFriendsToast(`Bereits mit ${name} verknüpft! Spielstand ist gesichert.`);
+      return;
+    }
+
+    linkedAccounts[provider] = true;
+    saveLinkedAccounts();
+
+    // Reward player with 500 Neon Gems!
+    if (typeof gems !== 'undefined') {
+      gems += 500;
+      try { localStorage.setItem('vt_gems', String(gems)); } catch (e) {}
+    }
+
+    // Sound and FX
+    if (typeof playPowerupSound === 'function') playPowerupSound('shield');
+    if (typeof spawnConfetti === 'function') spawnConfetti(window.innerWidth / 2, window.innerHeight / 2, 70);
+
+    updateAccountUI();
+    showFriendsToast(`🎉 ${name} verknüpft! +500💎 gutgeschrieben & Spielstand gesichert!`);
+
+    // Async Cloud Backend sync
+    try {
+      fetch('http://localhost:3000/api/player/link-account', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tag: myProfile.tag, provider })
+      }).catch(() => {});
+    } catch (e) {}
+  }
+
+  // Setup Account Modals & Navigation Listeners
+  const accountModal = document.getElementById('accountModalBackdrop');
+  const settingsModal = document.getElementById('settingsModalBackdrop');
+  const rewardsHubModal = document.getElementById('rewardsModalBackdrop');
+  const rateModal = document.getElementById('rateModalBackdrop');
+
+  // Home Profile Pill -> Open Account Hub
+  const homeProfilePill = document.getElementById('homeProfilePill');
+  if (homeProfilePill) {
+    homeProfilePill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      updateAccountUI();
+      accountModal.classList.remove('hidden');
+    });
+  }
+
+  document.getElementById('btnCloseAccount').addEventListener('click', () => {
+    accountModal.classList.add('hidden');
+  });
+
+  // Currency Pill -> Open Shop
+  const homeCurrencyPill = document.getElementById('homeCurrencyPill');
+  if (homeCurrencyPill) {
+    homeCurrencyPill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('shopModalBackdrop').classList.remove('hidden');
+    });
+  }
+
+  // Home Sound Toggle
+  const btnHomeSound = document.getElementById('btnHomeSoundToggle');
+  if (btnHomeSound) {
+    btnHomeSound.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (typeof audioCtx !== 'undefined') {
+        if (audioCtx.state === 'running') {
+          audioCtx.suspend();
+          btnHomeSound.textContent = '🔇';
+        } else {
+          audioCtx.resume();
+          btnHomeSound.textContent = '🔊';
+        }
+      }
+    });
+  }
+
+  // Settings Submenu Hub
+  const btnOpenSettings = document.getElementById('btnOpenSettingsHub');
+  if (btnOpenSettings) {
+    btnOpenSettings.addEventListener('click', (e) => {
+      e.stopPropagation();
+      settingsModal.classList.remove('hidden');
+    });
+  }
+  document.getElementById('btnCloseSettings').addEventListener('click', () => {
+    settingsModal.classList.add('hidden');
+  });
+  document.getElementById('btnConfirmSettings').addEventListener('click', () => {
+    settingsModal.classList.add('hidden');
+  });
+
+  // Rewards Submenu Hub
+  const btnOpenRewards = document.getElementById('btnOpenRewardsHub');
+  if (btnOpenRewards) {
+    btnOpenRewards.addEventListener('click', (e) => {
+      e.stopPropagation();
+      rewardsHubModal.classList.remove('hidden');
+    });
+  }
+  document.getElementById('btnCloseRewardsHub').addEventListener('click', () => {
+    rewardsHubModal.classList.add('hidden');
+  });
+
+  // Forward rewards buttons from sub-hub to existing modals
+  document.getElementById('btnOpenWheel').addEventListener('click', () => {
+    rewardsHubModal.classList.add('hidden');
+    document.getElementById('wheelModalBackdrop').classList.remove('hidden');
+  });
+  document.getElementById('btnOpenStreak').addEventListener('click', () => {
+    rewardsHubModal.classList.add('hidden');
+    document.getElementById('streakModalBackdrop').classList.remove('hidden');
+  });
+  document.getElementById('btnOpenQuests').addEventListener('click', () => {
+    rewardsHubModal.classList.add('hidden');
+    document.getElementById('questsModalBackdrop').classList.remove('hidden');
+  });
+  document.getElementById('btnOpenTrophies').addEventListener('click', () => {
+    rewardsHubModal.classList.add('hidden');
+    document.getElementById('trophiesModalBackdrop').classList.remove('hidden');
+  });
+
+  // Account Provider Button Clicks
+  document.getElementById('btnLinkGooglePlay').addEventListener('click', () => {
+    linkAccount('googlePlay', 'Google Play Games');
+  });
+
+  document.getElementById('btnLinkFacebook').addEventListener('click', () => {
+    linkAccount('facebook', 'Facebook Gaming');
+  });
+
+  document.getElementById('btnLinkInstagram').addEventListener('click', () => {
+    linkAccount('instagram', 'Instagram Community');
+    // Open game IG page
+    try { window.open('https://instagram.com/velocitytower.game', '_blank'); } catch (e) {}
+  });
+
+  document.getElementById('btnLinkEmail').addEventListener('click', () => {
+    const email = prompt('Gib deine E-Mail für Cloud-Backups ein:', 'climber@gmail.com');
+    if (email && email.includes('@')) {
+      linkAccount('email', 'E-Mail & Cloud-ID');
+    }
+  });
+
+  // Viral WhatsApp Share Button
+  document.getElementById('btnShareWhatsApp').addEventListener('click', () => {
+    const shareUrl = `https://joschi0090.github.io/velocity-tower/?addFriend=${encodeURIComponent(myProfile.tag)}&name=${encodeURIComponent(myProfile.nickname)}&floor=${myProfile.bestFloor}&score=${myProfile.bestScore}`;
+    const text = encodeURIComponent(`🔥 Kannst du meinen Highscore in Velocity Tower schlagen? Ich bin auf Etage ${myProfile.bestFloor} (${myProfile.bestScore} Pkt)! Spiele direkt gegen mich: ${shareUrl}`);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+  });
+
+  // Viral Link Copy Button
+  document.getElementById('btnCopyReferral').addEventListener('click', () => {
+    const shareUrl = `https://joschi0090.github.io/velocity-tower/?addFriend=${encodeURIComponent(myProfile.tag)}&name=${encodeURIComponent(myProfile.nickname)}&floor=${myProfile.bestFloor}&score=${myProfile.bestScore}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      showFriendsToast('📋 Viral-Einladungslink in Zwischenablage kopiert!');
+    }).catch(() => {
+      prompt('Kopiere deinen Einladungslink:', shareUrl);
+    });
+  });
+
+  // Quick Home Mode Chips (Classic / Overdrive / Rival)
+  const homeModeChips = document.querySelectorAll('#homeModeChips .mode-chip');
+  homeModeChips.forEach(chip => {
+    chip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      homeModeChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const mode = chip.getAttribute('data-gamemode');
+      if (mode === 'HARDCORE') {
+        gameMode = 'HARDCORE';
+        showFriendsToast('🔥 OVERDRIVE 2x FEVER MODUS AKTIV!');
+      } else if (mode === 'RIVAL') {
+        gameMode = 'CLASSIC';
+        friendsModal.classList.remove('hidden');
+      } else {
+        gameMode = 'CLASSIC';
+        showFriendsToast('⚡ CLASSIC MODUS AKTIV');
+      }
+      if (typeof renderGameModeGrid === 'function') renderGameModeGrid();
+    });
+  });
+
+  // 5-Star Rating Prompt Handlers
+  document.getElementById('btnRateConfirm').addEventListener('click', () => {
+    try { localStorage.setItem('vt_rated_app', 'true'); } catch (e) {}
+    rateModal.classList.add('hidden');
+    if (typeof gems !== 'undefined') {
+      gems += 300;
+      try { localStorage.setItem('vt_gems', String(gems)); } catch (e) {}
+    }
+    updateAccountUI();
+    showFriendsToast('⭐ Danke für deine 5-Sterne Bewertung! +300💎 erhalten!');
+    try { window.open('https://github.com/Joschi0090/velocity-tower/releases', '_blank'); } catch (e) {}
+  });
+
+  document.getElementById('btnRateLater').addEventListener('click', () => {
+    rateModal.classList.add('hidden');
+  });
+
+  // Initial update
+  updateAccountUI();
+
+
+    // Start game loop after full initialization
   loop();
 })();
 </script>

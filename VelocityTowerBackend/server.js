@@ -169,6 +169,40 @@ app.post('/api/player/sync', (req, res) => {
   res.json({ success: true, profile: player });
 });
 
+// 3b. Link Social Account (Google Play, FB, IG, Email)
+app.post('/api/player/link-account', (req, res) => {
+  const { tag, provider, accountName } = req.body;
+  if (!tag || !provider) {
+    return res.status(400).json({ error: 'Player tag and provider required.' });
+  }
+
+  let cleanTag = tag.trim().toUpperCase();
+  if (!cleanTag.startsWith('#')) cleanTag = '#' + cleanTag;
+
+  let player = playersDB[cleanTag];
+  if (!player) {
+    player = {
+      tag: cleanTag,
+      nickname: 'Climber',
+      avatar: '🎮',
+      bestFloor: 0,
+      bestScore: 0,
+      linkedAccounts: {},
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  if (!player.linkedAccounts) player.linkedAccounts = {};
+  player.linkedAccounts[provider] = accountName || true;
+  player.updatedAt = new Date().toISOString();
+
+  playersDB[cleanTag] = player;
+  saveData();
+
+  console.log(`[SOCIAL] ${cleanTag} linked account: ${provider}`);
+  res.json({ success: true, linkedAccounts: player.linkedAccounts });
+});
+
 // 4. Batch lookup for Friends List
 app.post('/api/friends/list', (req, res) => {
   const { tags } = req.body;
