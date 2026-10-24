@@ -1239,10 +1239,9 @@
         <div class="section-lbl">
           <span>4. START-ETAGE (BIOME CHECKPOINT)</span>
         </div>
-        <div class="opt-row" id="floorGrid"></div>
+                <div class="opt-row" id="floorGrid"></div>
 
-        
-        <!-- QUICK ARCADE REWARDS BAR (LUCKY SPIN, STREAK, QUESTS) -->
+        <!-- QUICK ARCADE REWARDS BAR (LUCKY SPIN, STREAK, QUESTS, TROPHIES) -->
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:8px 0 10px;">
           <button type="button" class="secondary-btn" id="btnOpenWheel" style="background:linear-gradient(135deg,rgba(255,190,11,0.18),rgba(247,37,133,0.18));border-color:#ffbe0b;color:#ffd166;font-weight:900;padding:6px 2px;font-size:8.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
             <span style="font-size:15px;">🎡</span>
@@ -1261,6 +1260,19 @@
             <span>TROPHIES</span>
           </button>
         </div>
+
+        <button type="button" class="primary-btn" id="btnMenuShop" style="background: linear-gradient(135deg, #ffd166, #f72585); color:#020617; font-weight:900; margin-bottom:10px; box-shadow:0 0 16px rgba(255,209,102,0.45);">
+          🛍️ NEON SHOP // SKINS, TRAILS &amp; DEALS
+        </button>
+        <button type="button" class="primary-btn" id="btnStart">▶ START CLIMBING</button>
+
+        <div class="menu-footer-row">
+          <div class="highscore-lbl">
+            HIGHSCORE: <span id="menuBest" style="color:#ffbe0b;font-weight:900;">0</span> PTS
+          </div>
+          <button type="button" class="dl-mini-btn" id="btnDownloadHtml">⬇ SAVE .HTML</button>
+        </div>
+      </div>
     </div>
 
     <!-- GAME OVER OVERLAY -->
