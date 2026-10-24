@@ -3374,6 +3374,40 @@
 
     window.addEventListener('touchend', onTouchEnd);
     window.addEventListener('touchcancel', onTouchEnd);
+
+    // Desktop / Stylus Pointer & Mouse Fallback
+    btnL.addEventListener('mousedown', e => {
+      if (state !== 'PLAY') return;
+      audio.init();
+      keys.left = true;
+      keys.right = false;
+      btnL.classList.add('pressed');
+      createTouchRipple(e.clientX, e.clientY, '#00f5d4');
+    });
+    btnL.addEventListener('mouseup', () => { keys.left = false; btnL.classList.remove('pressed'); });
+    btnL.addEventListener('mouseleave', () => { keys.left = false; btnL.classList.remove('pressed'); });
+
+    btnR.addEventListener('mousedown', e => {
+      if (state !== 'PLAY') return;
+      audio.init();
+      keys.right = true;
+      keys.left = false;
+      btnR.classList.add('pressed');
+      createTouchRipple(e.clientX, e.clientY, '#00f5d4');
+    });
+    btnR.addEventListener('mouseup', () => { keys.right = false; btnR.classList.remove('pressed'); });
+    btnR.addEventListener('mouseleave', () => { keys.right = false; btnR.classList.remove('pressed'); });
+
+    btnJ.addEventListener('mousedown', e => {
+      if (state !== 'PLAY') return;
+      audio.init();
+      keys.jumpHeld = true;
+      triggerJump();
+      btnJ.classList.add('pressed');
+      createTouchRipple(e.clientX, e.clientY, '#f72585');
+    });
+    btnJ.addEventListener('mouseup', () => { keys.jumpHeld = false; btnJ.classList.remove('pressed'); });
+    btnJ.addEventListener('mouseleave', () => { keys.jumpHeld = false; btnJ.classList.remove('pressed'); });
   }
 
   // ============================================================================
@@ -4904,7 +4938,9 @@
       // Interactive In-Game Jump Guide & Visual Indicators
       if (player && hudConfig && hudConfig.jumpGuide && state === 'PLAY') {
         const isGroundJump = player.onGround || player.coyote > 0;
-        const speedRatio = Math.min(1, Math.abs(player.vx) / (maxVx || 8));
+        const curScaling = getFloorScaling(maxFloor);
+        const curMaxVx = 9.6 * (curScaling ? curScaling.speedMult : 1);
+        const speedRatio = Math.min(1, Math.abs(player.vx) / (curMaxVx || 8));
 
         // 1. Kinetic Launch Rings & Jump Prompt under Climber
         if (isGroundJump) {
@@ -5057,10 +5093,18 @@
     timeAccumulator += delta;
 
     while (timeAccumulator >= FIXED_STEP) {
-      update();
+      try {
+        update();
+      } catch (err) {
+        console.error('Error in update():', err);
+      }
       timeAccumulator -= FIXED_STEP;
     }
-    draw();
+    try {
+      draw();
+    } catch (err) {
+      console.error('Error in draw():', err);
+    }
     requestAnimationFrame(loop);
   }
 
