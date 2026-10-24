@@ -1149,6 +1149,7 @@
       </div>
       <button class="icon-btn" id="btnTopShop" title="Neon Shop & Skins" style="color:#ffd166;font-size:15px;">🛍️</button>
       <button class="icon-btn" id="btnPause" title="Menü / Einstellungen">⚙</button>
+      <button class="icon-btn" id="btnToggleVoice" title="Arcade Announcer Stimme an/aus" style="color:#00f5d4;font-size:14px;">🎙️</button>
       <button class="icon-btn" id="btnMute" title="Sound an/aus">🔊</button>
     </div>
   </header>
@@ -1242,32 +1243,24 @@
 
         
         <!-- QUICK ARCADE REWARDS BAR (LUCKY SPIN, STREAK, QUESTS) -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:8px 0 10px;">
-          <button type="button" class="secondary-btn" id="btnOpenWheel" style="background:linear-gradient(135deg,rgba(255,190,11,0.18),rgba(247,37,133,0.18));border-color:#ffbe0b;color:#ffd166;font-weight:900;padding:8px 4px;font-size:9.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
-            <span style="font-size:16px;">🎡</span>
-            <span>LUCKY SPIN</span>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:8px 0 10px;">
+          <button type="button" class="secondary-btn" id="btnOpenWheel" style="background:linear-gradient(135deg,rgba(255,190,11,0.18),rgba(247,37,133,0.18));border-color:#ffbe0b;color:#ffd166;font-weight:900;padding:6px 2px;font-size:8.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
+            <span style="font-size:15px;">🎡</span>
+            <span>SPIN</span>
           </button>
-          <button type="button" class="secondary-btn" id="btnOpenStreak" style="background:linear-gradient(135deg,rgba(0,245,212,0.18),rgba(59,130,246,0.18));border-color:#00f5d4;color:#00f5d4;font-weight:900;padding:8px 4px;font-size:9.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
-            <span style="font-size:16px;">📅</span>
-            <span>7-TAGE STREAK</span>
+          <button type="button" class="secondary-btn" id="btnOpenStreak" style="background:linear-gradient(135deg,rgba(0,245,212,0.18),rgba(59,130,246,0.18));border-color:#00f5d4;color:#00f5d4;font-weight:900;padding:6px 2px;font-size:8.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
+            <span style="font-size:15px;">📅</span>
+            <span>STREAK</span>
           </button>
-          <button type="button" class="secondary-btn" id="btnOpenQuests" style="background:linear-gradient(135deg,rgba(244,114,182,0.18),rgba(147,51,234,0.18));border-color:#f472b6;color:#f472b6;font-weight:900;padding:8px 4px;font-size:9.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
-            <span style="font-size:16px;">🎯</span>
-            <span id="menuQuestBadgeTxt">QUESTS (0/3)</span>
+          <button type="button" class="secondary-btn" id="btnOpenQuests" style="background:linear-gradient(135deg,rgba(244,114,182,0.18),rgba(147,51,234,0.18));border-color:#f472b6;color:#f472b6;font-weight:900;padding:6px 2px;font-size:8.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
+            <span style="font-size:15px;">🎯</span>
+            <span id="menuQuestBadgeTxt">QUESTS</span>
+          </button>
+          <button type="button" class="secondary-btn" id="btnOpenTrophies" style="background:linear-gradient(135deg,rgba(255,209,102,0.18),rgba(59,130,246,0.18));border-color:#ffd166;color:#ffd166;font-weight:900;padding:6px 2px;font-size:8.5px;display:flex;flex-direction:column;align-items:center;gap:2px;">
+            <span style="font-size:15px;">🏆</span>
+            <span>TROPHIES</span>
           </button>
         </div>
-        <button type="button" class="primary-btn" id="btnMenuShop" style="background: linear-gradient(135deg, #ffd166, #f72585); color:#020617; font-weight:900; margin-bottom:10px; box-shadow:0 0 16px rgba(255,209,102,0.45);">
-          🛍️ NEON SHOP // SKINS, TRAILS & FREE CORES
-        </button>
-        <button type="button" class="primary-btn" id="btnStart">▶ START CLIMBING</button>
-
-        <div class="menu-footer-row">
-          <div class="highscore-lbl">
-            HIGHSCORE: <span id="menuBest" style="color:#ffbe0b;font-weight:900;">0</span> PTS
-          </div>
-          <button type="button" class="dl-mini-btn" id="btnDownloadHtml">⬇ SAVE .HTML</button>
-        </div>
-      </div>
     </div>
 
     <!-- GAME OVER OVERLAY -->
@@ -1422,6 +1415,33 @@
 
         <div style="text-align:center;font-size:9px;color:#64748b;">
           Missionen aktualisieren sich täglich um Mitternacht.
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- ======================================================================
+         TROPHY ROOM & ACHIEVEMENTS MODAL
+         ====================================================================== -->
+    <div class="preview-modal-backdrop hidden" id="trophiesModalBackdrop" style="z-index: 96;">
+      <div class="shop-modal-card" style="max-width: 380px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:24px;">🏆</span>
+            <div>
+              <div style="font-size:13px;font-weight:900;color:#ffd166;letter-spacing:0.06em;">RUHMESHALLE &amp; ERFOLGE</div>
+              <div style="font-size:9px;color:#94a3b8;">Schalte Trophäen frei &amp; kassiere Cores!</div>
+            </div>
+          </div>
+          <button type="button" id="btnCloseTrophies" style="background:none;border:none;color:#94a3b8;font-size:18px;cursor:pointer;">✕</button>
+        </div>
+
+        <div id="trophiesGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:340px;overflow-y:auto;padding-right:4px;">
+          <!-- Dynamically populated 12 trophies -->
+        </div>
+
+        <div style="text-align:center;font-size:9px;color:#64748b;margin-top:10px;" id="trophiesCountDisplay">
+          Freigeschaltet: 0/12 Trophäen
         </div>
       </div>
     </div>
@@ -2502,6 +2522,19 @@
     const maxVx = 9.6 * scaling.speedMult;
 
     audio.tick(combo);
+
+    // NEON OVERDRIVE ACTIVATION
+    if (combo >= 10 && !player.wasOverdrive) {
+      player.wasOverdrive = true;
+      triggerHaptic(50);
+      audio.sfx('super');
+      announceVoice('Overdrive!', 1.2, 1.2);
+      spawnText('⚡ OVERDRIVE (2x SCORE)! ⚡', W / 2, player.y - 50, '#f72585', 16);
+      spawnConfetti(W / 2, player.y - 40, 25);
+    } else if (combo < 10 && player.wasOverdrive) {
+      player.wasOverdrive = false;
+    }
+
     audio.beatPulse *= 0.88;
     leftWallFlash *= 0.85;
     rightWallFlash *= 0.85;
@@ -2690,6 +2723,9 @@
           }
           if (player.floor > maxFloor) {
             maxFloor = player.floor;
+            if (maxFloor >= 25) unlockAchievement('first_steps');
+            if (maxFloor >= 100) unlockAchievement('century');
+            if (maxFloor >= 200) unlockAchievement('stratosphere');
             score = maxFloor * 10 + maxCombo * maxCombo * 5;
           }
         }
@@ -2783,7 +2819,7 @@
         audio.sfx('super');
         shockwaves.push({ x: player.x, y: player.y, r: 8, maxR: 70, color: '#00f5d4', life: 1 });
         spawnBurst(player.x, player.y, '#00f5d4', 25);
-        spawnText('🛡️ SCHILD RETTUNG!', W / 2, player.y - 35, '#00f5d4', 16);
+        spawnText('🛡️ SCHILD RETTUNG!', W / 2, player.y - 35, '#00f5d4', 16); unlockAchievement('shield_survivor');
       } else {
         triggerHaptic(95);
         endGame('TOWER COLLAPSED', 'Die Kamera ist schneller gestiegen als du!');
@@ -2811,7 +2847,7 @@
     document.getElementById('overSubtext').textContent = subTxt;
     if (window._rivalChallenge) {
       if (maxFloor >= window._rivalChallenge.floor || score >= window._rivalChallenge.score) {
-        triggerCoinToast('👑 DU HAST DEINEN FREUND GESCHLAGEN!');
+        triggerCoinToast('👑 DU HAST DEINEN FREUND GESCHLAGEN!'); unlockAchievement('rival_slayer'); spawnConfetti(W / 2, H * 0.4, 50);
         document.getElementById('overSubtext').innerHTML = '👑 <strong style="color:#00f5d4;">SIEG!</strong> Rekord deines Freundes geschlagen!';
       } else {
         const diff = window._rivalChallenge.floor - maxFloor;
@@ -2853,8 +2889,13 @@
     if (combo <= 0) return;
     const bonus = combo * combo * 10;
     score += bonus;
-    const callouts = ['GOOD!', 'SWEET!', 'GREAT!', 'SUPER!', 'WOW!', 'AMAZING!', 'EXTREME!'];
-    const cTxt = callouts[Math.min(callouts.length - 1, Math.floor(combo / 5))];
+    const callouts = ['GOOD!', 'SWEET!', 'GREAT!', 'SUPER!', 'WOW!', 'AMAZING!', 'LUDICROUS SPEED!!'];
+    const cIdx = Math.min(callouts.length - 1, Math.floor(combo / 4));
+    const cTxt = callouts[cIdx];
+    announceVoice(cTxt, 1.1 + cIdx * 0.05);
+    playArcadeCalloutSynth(520 + cIdx * 60);
+    if (combo >= 10) unlockAchievement('combo_master');
+    if (combo >= 25) unlockAchievement('ludicrous');
     spawnText(`${cTxt} +${bonus.toLocaleString('de-DE')}`, W / 2, player.y - 45, '#00f5d4', 16);
     combo = 0;
     comboTimer = 0;
@@ -2976,6 +3017,20 @@
     ctx.rect(innerX, 0, innerW, H);
     ctx.clip();
 
+    // Neon Overdrive Fever Border
+    if (combo >= 10) {
+      const rColors = ['#00f5d4', '#f72585', '#ffd166', '#a3e635'];
+      const curC = rColors[Math.floor((Date.now() * 0.005) % rColors.length)];
+      ctx.save();
+      ctx.strokeStyle = curC;
+      ctx.lineWidth = 3.5;
+      ctx.shadowColor = curC;
+      ctx.shadowBlur = 14;
+      ctx.strokeRect(innerX + 1, 1, innerW - 2, H - 2);
+      ctx.restore();
+    }
+
+
     // Parallax Grid
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
     ctx.lineWidth = 1;
@@ -3002,6 +3057,21 @@
     ctx.globalAlpha = 1;
 
     ctx.translate(shakeX, -snapCamY + shakeY);
+
+    // Confetti Falling Animation
+    for (let i = confetti.length - 1; i >= 0; i--) {
+      const cf = confetti[i];
+      cf.x += cf.vx; cf.y += cf.vy; cf.vy += cf.gravity; cf.vx *= 0.98; cf.rot += cf.vrot; cf.life -= 0.012;
+      if (cf.life <= 0) { confetti.splice(i, 1); continue; }
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, cf.life);
+      ctx.translate(Math.round(cf.x), Math.round(cf.y));
+      ctx.rotate(cf.rot);
+      ctx.fillStyle = cf.color;
+      ctx.fillRect(-cf.w * 0.5, -cf.h * 0.5, cf.w, cf.h);
+      ctx.restore();
+    }
+
 
     // Draw Platforms
     for (let i = 0; i < platforms.length; i++) {
@@ -3303,6 +3373,177 @@
   // FORTUNE WHEEL, DAILY LOGIN STREAK & QUESTS SYSTEM (AAA POLISH)
   // ============================================================================
   
+  
+  // ============================================================================
+  // GOD-TIER ARCADE POLISH: VOICE ANNOUNCER, OVERDRIVE & TROPHIES
+  // ============================================================================
+  let voiceEnabled = true;
+  try {
+    const ve = localStorage.getItem('vt_voice_enabled');
+    if (ve !== null) voiceEnabled = ve === 'true';
+  } catch (e) {}
+
+  function updateVoiceBtnUI() {
+    const btn = document.getElementById('btnToggleVoice');
+    if (btn) {
+      btn.textContent = voiceEnabled ? '🎙️' : '🔇';
+      btn.style.color = voiceEnabled ? '#00f5d4' : '#64748b';
+    }
+  }
+  updateVoiceBtnUI();
+
+  const btnVoice = document.getElementById('btnToggleVoice');
+  if (btnVoice) {
+    btnVoice.onclick = () => {
+      voiceEnabled = !voiceEnabled;
+      try { localStorage.setItem('vt_voice_enabled', String(voiceEnabled)); } catch (e) {}
+      updateVoiceBtnUI();
+      triggerCoinToast(voiceEnabled ? '🎙️ ARCADE ANNOUNCER: AN' : '🔇 ARCADE ANNOUNCER: AUS');
+    };
+  }
+
+  function announceVoice(phrase, pitch = 1.15, rate = 1.15) {
+    if (!voiceEnabled || !window.speechSynthesis) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(phrase);
+      u.pitch = pitch;
+      u.rate = rate;
+      u.volume = 0.95;
+      const voices = window.speechSynthesis.getVoices();
+      const enVoice = voices.find(v => v.lang && v.lang.startsWith('en'));
+      if (enVoice) u.voice = enVoice;
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+
+  function playArcadeCalloutSynth(noteFreq) {
+    try {
+      if (audio.ctx && !audio.muted) {
+        const osc = audio.ctx.createOscillator();
+        const g = audio.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(noteFreq, audio.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(noteFreq * 1.5, audio.ctx.currentTime + 0.15);
+        g.gain.setValueAtTime(0.12, audio.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, audio.ctx.currentTime + 0.28);
+        osc.connect(g); g.connect(audio.ctx.destination);
+        osc.start(); osc.stop(audio.ctx.currentTime + 0.28);
+      }
+    } catch (e) {}
+  }
+
+  // CONFETTI PARTICLE SYSTEM
+  let confetti = [];
+  function spawnConfetti(x = W / 2, y = H * 0.4, count = 45) {
+    const colors = ['#00f5d4', '#f72585', '#ffd166', '#a3e635', '#38bdf8', '#ffffff'];
+    for (let i = 0; i < count; i++) {
+      const a = (Math.random() - 0.5) * Math.PI * 1.6 - Math.PI * 0.5;
+      const s = 4.0 + Math.random() * 8.5;
+      confetti.push({
+        x: x + (Math.random() - 0.5) * 80,
+        y: y + (Math.random() - 0.5) * 40,
+        vx: Math.cos(a) * s,
+        vy: Math.sin(a) * s,
+        w: 5 + Math.random() * 6,
+        h: 3 + Math.random() * 4,
+        rot: Math.random() * Math.PI * 2,
+        vrot: (Math.random() - 0.5) * 0.28,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        life: 1.0,
+        gravity: 0.22
+      });
+    }
+  }
+
+  // 12 TROPHIES / ACHIEVEMENTS
+  const ACHIEVEMENTS = [
+    { id: 'first_steps', title: 'Erster Aufstieg', desc: 'Erreiche Etage 25', icon: '🌟', reward: 15 },
+    { id: 'combo_master', title: 'Combo Meister', desc: 'Erziele eine 10x Combo', icon: '⚡', reward: 20 },
+    { id: 'wall_runner', title: 'Apex Wandläufer', desc: 'Führe einen Double Ricochet aus', icon: '🧱', reward: 20 },
+    { id: 'century', title: 'Hundert-Club', desc: 'Erreiche Etage 100', icon: '👑', reward: 35 },
+    { id: 'stratosphere', title: 'Stratosphäre', desc: 'Erreiche Etage 200', icon: '🚀', reward: 50 },
+    { id: 'ludicrous', title: 'Ludicrous Speed', desc: 'Erziele eine 25x Mega-Combo', icon: '🌪️', reward: 50 },
+    { id: 'magnetar', title: 'Magnetar', desc: 'Sammle 15 Cores im Turm', icon: '🧲', reward: 20 },
+    { id: 'spring_master', title: 'Super Sprungfeder', desc: 'Nutze die Spring Boots 3x', icon: '👟', reward: 15 },
+    { id: 'shield_survivor', title: 'Unsterblich', desc: 'Überlebe durch den Aegis-Schild', icon: '🛡️', reward: 25 },
+    { id: 'lucky_spinner', title: 'Glücksritter', desc: 'Drehe das Neon Glücksrad', icon: '🎡', reward: 15 },
+    { id: 'rival_slayer', title: 'Rivalen-Bezwinger', desc: 'Gewinne ein 1v1-Freunde-Duell', icon: '⚔️', reward: 30 },
+    { id: 'core_tycoon', title: 'Core-Millionär', desc: 'Sammle insgesamt 100 Neon Cores', icon: '💎', reward: 50 }
+  ];
+
+  let unlockedAchievements = [];
+  try {
+    const ua = JSON.parse(localStorage.getItem('vt_unlocked_trophies'));
+    if (Array.isArray(ua)) unlockedAchievements = ua;
+  } catch (e) {}
+
+  function unlockAchievement(id) {
+    if (unlockedAchievements.includes(id)) return;
+    const ach = ACHIEVEMENTS.find(a => a.id === id);
+    if (!ach) return;
+
+    unlockedAchievements.push(id);
+    try { localStorage.setItem('vt_unlocked_trophies', JSON.stringify(unlockedAchievements)); } catch (e) {}
+
+    awardCores(ach.reward, `Erfolg: ${ach.title}`);
+    triggerHaptic(55);
+    spawnConfetti(W / 2, H * 0.35, 35);
+    announceVoice('Achievement Unlocked!', 1.25);
+
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;top:60px;left:50%;transform:translateX(-50%);z-index:99;background:linear-gradient(135deg,#020617,#0f172a);border:2px solid #ffd166;box-shadow:0 0 25px rgba(255,209,102,0.6);border-radius:14px;padding:8px 16px;display:flex;align-items:center;gap:10px;pointer-events:none;';
+    banner.innerHTML = `
+      <div style="font-size:24px;">🏆</div>
+      <div>
+        <div style="font-size:8.5px;color:#ffd166;font-weight:900;letter-spacing:0.06em;">ERFOLG FREIGESCHALTET!</div>
+        <div style="font-size:12px;color:#fff;font-weight:900;">${ach.title} (+${ach.reward} 💎)</div>
+        <div style="font-size:9px;color:#94a3b8;">${ach.desc}</div>
+      </div>
+    `;
+    document.body.appendChild(banner);
+    setTimeout(() => { if (banner.parentNode) banner.parentNode.removeChild(banner); }, 3500);
+  }
+
+  function renderTrophiesModal() {
+    const grid = document.getElementById('trophiesGrid');
+    grid.innerHTML = '';
+    ACHIEVEMENTS.forEach(a => {
+      const isUnlocked = unlockedAchievements.includes(a.id);
+      const card = document.createElement('div');
+      card.style.cssText = `
+        background: ${isUnlocked ? 'rgba(255,209,102,0.12)' : 'rgba(15,23,42,0.6)'};
+        border: 1.5px solid ${isUnlocked ? '#ffd166' : 'rgba(255,255,255,0.08)'};
+        border-radius: 10px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        opacity: ${isUnlocked ? '1' : '0.55'};
+      `;
+      card.innerHTML = `
+        <div style="font-size:22px;filter:${isUnlocked ? 'none' : 'grayscale(1)'};">${a.icon}</div>
+        <div>
+          <div style="font-size:10.5px;font-weight:900;color:${isUnlocked ? '#ffd166' : '#94a3b8'};">${a.title}</div>
+          <div style="font-size:8px;color:#cbd5e1;line-height:1.2;">${a.desc}</div>
+          <div style="font-size:8px;color:#00f5d4;font-weight:800;margin-top:2px;">+${a.reward} 💎</div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    const countDisp = document.getElementById('trophiesCountDisplay');
+    if (countDisp) countDisp.textContent = `Freigeschaltet: ${unlockedAchievements.length}/${ACHIEVEMENTS.length} Trophäen`;
+  }
+
+  document.getElementById('btnOpenTrophies').onclick = () => {
+    renderTrophiesModal();
+    document.getElementById('trophiesModalBackdrop').classList.remove('hidden');
+  };
+  document.getElementById('btnCloseTrophies').onclick = () => {
+    document.getElementById('trophiesModalBackdrop').classList.add('hidden');
+  };
+
   // 1. FORTUNE WHEEL ENGINE
   const WHEEL_SECTORS = [
     { label: '+5 CORES', icon: '💎', reward: () => awardCores(5, 'Lucky Spin (+5 Cores)'), color: '#3b82f6' },
@@ -3451,14 +3692,14 @@
   document.getElementById('btnSpinWheel').onclick = () => {
     lastWheelSpinDate = getTodayString();
     try { localStorage.setItem('vt_last_spin_date', lastWheelSpinDate); } catch (e) {}
-    spinWheel((won) => {
+    spinWheel((won) => { unlockAchievement('lucky_spinner');
       updateWheelStatus();
     });
   };
   document.getElementById('btnSpinWithAd').onclick = () => {
     playRewardedAd((success) => {
       if (success) {
-        spinWheel((won) => {
+        spinWheel((won) => { unlockAchievement('lucky_spinner');
           updateWheelStatus();
         });
       }
